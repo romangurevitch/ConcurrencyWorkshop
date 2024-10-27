@@ -53,7 +53,7 @@ func Plot(results []simulator.EventResult, filename string) error {
 	}
 
 	// Save the plot to a PNG file.
-	if err := p.Save(30*vg.Centimeter, 30*vg.Centimeter, filename); err != nil {
+	if err = p.Save(30*vg.Centimeter, 30*vg.Centimeter, filename); err != nil {
 		return err
 	}
 

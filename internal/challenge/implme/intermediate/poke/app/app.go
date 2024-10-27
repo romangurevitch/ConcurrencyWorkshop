@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"log"
 	"log/slog"
 	"net/http"
@@ -57,8 +58,8 @@ func (p *pokeAPP) Start() {
 	myWindow.ShowAndRun()
 }
 
-func (p *pokeAPP) OnChanged(ID string) {
-	_, err := p.fetchAndUpdatePokemon(ID)
+func (p *pokeAPP) OnChanged(id string) {
+	_, err := p.fetchAndUpdatePokemon(id)
 	if err != nil {
 		slog.Error("fetchAndUpdatePokemon", "error", err)
 	}
@@ -72,21 +73,21 @@ func (p *pokeAPP) OnChanged(ID string) {
 //
 // The function is currently not implemented and will panic if used.
 // TODO: Implement OnChangedNonBlocking to fetch and update Pokémon details asynchronously.
-func (p *pokeAPP) OnChangedNonBlocking(ID string) {
+func (p *pokeAPP) OnChangedNonBlocking(_ string) {
 	panic("implement me!")
 }
 
-func (p *pokeAPP) fetchAndUpdatePokemon(ID string) (bool, error) {
-	if ID == "" {
+func (p *pokeAPP) fetchAndUpdatePokemon(id string) (bool, error) {
+	if id == "" {
 		p.setImage(defaultURL)
 		return true, nil
 	}
 
-	poke, err := p.pokeClient.FetchPokemon(ID)
+	poke, err := p.pokeClient.FetchPokemon(id)
 	if err != nil {
 		p.setName("Not Found")
 		p.setImage(notFoundImageURL)
-		return false, nil
+		return false, err
 	}
 
 	p.setName(poke.Name)
@@ -114,12 +115,13 @@ func createHeader() *widget.Label {
 }
 
 func imageFromURL(url string) *canvas.Image {
-	response, err := http.Get(url)
+	req, err := http.NewRequestWithContext(context.Background(), http.MethodGet, url, nil)
 	if err != nil {
 		log.Fatal(err)
 	}
+	response, err := http.DefaultClient.Do(req)
 	defer func() {
-		err := response.Body.Close()
+		err = response.Body.Close()
 		if err != nil {
 			slog.Error("Close", "error", err)
 		}

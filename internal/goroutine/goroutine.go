@@ -27,7 +27,7 @@ func UnexpectedResult() int {
 
 	go func() {
 		for i := 0; i < 1000; i++ {
-			basicCounter.Inc() //counter++
+			basicCounter.Inc() // counter++
 		}
 	}()
 
@@ -35,7 +35,7 @@ func UnexpectedResult() int {
 }
 
 // UnexpectedResultFix is it fixed?
-// WaitGroup
+// WaitGroup.
 func UnexpectedResultFix() int {
 	basicCounter := counter.NewBasicCounter()
 	wg := sync.WaitGroup{}
@@ -53,7 +53,7 @@ func UnexpectedResultFix() int {
 }
 
 // LetsMakeASmallChange ohh no!
-// Race condition detection
+// Race condition detection.
 func LetsMakeASmallChange() int {
 	basicCounter := counter.NewBasicCounter()
 	wg := sync.WaitGroup{}
@@ -71,7 +71,7 @@ func LetsMakeASmallChange() int {
 }
 
 // FinallySomethingWorksAsExpected but is it?
-// Locks, mutex, rwmutex, atomic
+// Locks, mutex, rwmutex, atomic.
 func FinallySomethingWorksAsExpected() int {
 	basicCounter := counter.NewBasicCounter()
 	wg := sync.WaitGroup{}
@@ -127,7 +127,7 @@ func NonStoppingGoRoutine() int {
 }
 
 // NonStoppingGoRoutineWithShutdown is it good enough though?
-// channels, signals
+// channels, signals.
 func NonStoppingGoRoutineWithShutdown() (int, bool) {
 	atomicCounter := counter.NewAtomicCounter()
 	gracefulShutdown := false
@@ -168,7 +168,6 @@ func NonStoppingGoRoutineCorrectShutdown() (int, bool) {
 			default:
 				inlinePrint(atomicCounter.Inc())
 			}
-
 		}
 	}()
 
@@ -177,7 +176,7 @@ func NonStoppingGoRoutineCorrectShutdown() (int, bool) {
 }
 
 // NonStoppingGoRoutineContext use context
-// Context
+// Context.
 func NonStoppingGoRoutineContext(ctx context.Context) (int, bool) {
 	atomicCounter := counter.NewAtomicCounter()
 
@@ -209,7 +208,7 @@ func NonStoppingGoRoutineContext(ctx context.Context) (int, bool) {
 	return atomicCounter.Count(), gracefulShutdown
 }
 
-// NonStoppingGoRoutineContextBetter use context
+// NonStoppingGoRoutineContextBetter use context.
 func NonStoppingGoRoutineContextBetter(ctx context.Context) (int, bool) {
 	atomicCounter := counter.NewAtomicCounter()
 
@@ -238,7 +237,7 @@ func NonStoppingGoRoutineContextBetter(ctx context.Context) (int, bool) {
 	return atomicCounter.Count(), gracefulShutdown
 }
 
-// NonStoppingGoRoutineContextBonus use context with tiny change
+// NonStoppingGoRoutineContextBonus use context with tiny change.
 func NonStoppingGoRoutineContextBonus(ctx context.Context) (int, bool) {
 	atomicCounter := counter.NewAtomicCounter()
 

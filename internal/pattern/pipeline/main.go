@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
+	"strconv"
 
 	"github.com/mtslzr/pokeapi-go"
 	"github.com/mtslzr/pokeapi-go/structs"
@@ -42,7 +42,7 @@ func Pipe[T any, U any](ctx context.Context, inCh <-chan Result[T], processFunc 
 
 // fetchPokemon fetches Pokémon data for a given ID.
 func fetchPokemon(_ context.Context, result Result[int]) Result[structs.Pokemon] {
-	pokemon, err := pokeapi.Pokemon(fmt.Sprint(result.Value))
+	pokemon, err := pokeapi.Pokemon(strconv.Itoa(result.Value))
 	if err != nil {
 		return Result[structs.Pokemon]{Err: err}
 	}

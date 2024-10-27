@@ -10,8 +10,8 @@ func SequentialSum(inputSize int) int {
 	return sum
 }
 
-// ParallelSum implement this method:
-func ParallelSum(inputSize int) int {
+// ParallelSum implement this method.
+func ParallelSum(_ int) int {
 	panic("implement me!")
 }
 

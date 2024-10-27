@@ -9,7 +9,6 @@ import (
 )
 
 func TestPubSub(t *testing.T) {
-
 	tests := []struct {
 		name   string
 		action func(*PubSub[string], *testing.T)

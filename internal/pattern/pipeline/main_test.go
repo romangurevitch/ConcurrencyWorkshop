@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -23,7 +23,7 @@ func TestGeneratorAndProcessor(t *testing.T) {
 			name: "Successful operation",
 			max:  5,
 			processFunc: func(ctx context.Context, res Result[int]) Result[string] {
-				return Result[string]{Value: "Processed: " + fmt.Sprint(res.Value)}
+				return Result[string]{Value: "Processed: " + strconv.Itoa(res.Value)}
 			},
 			expectedOutput: []Result[string]{
 				{Value: "Processed: 0"},
@@ -37,7 +37,7 @@ func TestGeneratorAndProcessor(t *testing.T) {
 			name: "Context cancellation",
 			max:  5,
 			processFunc: func(ctx context.Context, res Result[int]) Result[string] {
-				return Result[string]{Value: "Processed: " + fmt.Sprint(res.Value)}
+				return Result[string]{Value: "Processed: " + strconv.Itoa(res.Value)}
 			},
 			cancel:         true,
 			expectedOutput: nil, // No output expected due to context cancellation.
@@ -49,7 +49,7 @@ func TestGeneratorAndProcessor(t *testing.T) {
 				if res.Value == 3 {
 					return Result[string]{Err: ErrAtValue3}
 				}
-				return Result[string]{Value: "Processed: " + fmt.Sprint(res.Value)}
+				return Result[string]{Value: "Processed: " + strconv.Itoa(res.Value)}
 			},
 			expectedOutput: []Result[string]{
 				{Value: "Processed: 0"},

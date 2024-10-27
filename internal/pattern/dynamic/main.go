@@ -3,8 +3,8 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
+	"strconv"
 	"sync"
 	"time"
 
@@ -61,7 +61,6 @@ func NewRateLimited[T any, U any](ctx context.Context, limiter *rate.Limiter, jo
 				}(job)
 			}
 		}
-
 	}()
 
 	return results
@@ -71,7 +70,7 @@ var ErrNegativeValue = errors.New("negative value")
 
 // FetchPokemonName just returns the Pokemon name as a string.
 func FetchPokemonName(ctx context.Context, pokemonID int) (string, error) {
-	pokemon, err := pokeapi.Pokemon(fmt.Sprint(pokemonID))
+	pokemon, err := pokeapi.Pokemon(strconv.Itoa(pokemonID))
 	if err != nil {
 		return "", err
 	}

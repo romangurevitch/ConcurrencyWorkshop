@@ -10,17 +10,17 @@ type concurrent struct {
 }
 
 func (c concurrent) HandleEvents(ctx context.Context, events []chan simulator.Event) {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (c concurrent) Results() []simulator.EventResult {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 
 func (c concurrent) Wait() {
-	//TODO implement me
+	// TODO implement me
 	panic("implement me")
 }
 

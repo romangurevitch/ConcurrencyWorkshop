@@ -25,10 +25,10 @@ func Test_pokeAPP_OnChangedNonBlocking(t *testing.T) {
 			name: "test non blocking",
 			fields: fields{func(t *testing.T) client.PokeClient {
 				pokeClient := mocks.NewPokeClient(t)
-				pokeClient.EXPECT().FetchPokemon(mock.Anything).Maybe().Run(func(args mock.Arguments) {
+				pokeClient.EXPECT().FetchPokemon(mock.Anything).Maybe().Run(func(_ mock.Arguments) {
 					// If the call is blocking the test will not finish successfully
 					var nilChan chan struct{}
-					nilChan <- struct{}{}
+					nilChan <- struct{}{} //nolint
 				})
 				return pokeClient
 			}},
