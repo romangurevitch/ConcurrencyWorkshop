@@ -22,11 +22,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Cache Go modules
-        id: cache-modules
-        uses: actions/cache@v4
+      - uses: actions/cache@v4
         with:
-          path: ~/go/pkg/mod
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
@@ -50,12 +50,6 @@ jobs:
         with:
           go-version: 'stable'
 
-      - name: Retrieve cached modules
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ needs.test.outputs.cache-key }}
-
       - name: Run basic fix me tests
         run: make fixme-basic
 
@@ -77,12 +71,6 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 'stable'
-
-      - name: Retrieve cached modules
-        uses: actions/cache@v4
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ needs.test.outputs.cache-key }}
 
       - name: Run basic implement me tests
         run: make implme-basic
