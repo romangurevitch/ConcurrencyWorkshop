@@ -38,7 +38,7 @@ jobs:
         run: make test
 
   fixme-challenges:
-    if: ${{ github.ref != 'refs/heads/main' }}
+    if: ${{ github.ref != 'refs/heads/main' && startsWith(github.head_ref, 'fixme') }}
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -69,7 +69,7 @@ jobs:
         run: make fixme-advanced
 
   implme-challenges:
-    if: ${{ github.ref != 'refs/heads/main' }}
+    if: ${{ github.ref != 'refs/heads/main' && startsWith(github.head_ref, 'implme') }}
     needs: test
     runs-on: ubuntu-latest
     steps:
