@@ -20,11 +20,11 @@ func UnexpectedResult() int {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="UnexpectedResult$" 
+  go test ../../internal/goroutine -v -count=1 -run="UnexpectedResult$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="UnexpectedResult$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="UnexpectedResult$" -race 
 ```
 
 <table>

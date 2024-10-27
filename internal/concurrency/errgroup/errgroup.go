@@ -31,7 +31,7 @@ func Pitfall() {
 		return err
 	})
 
-	// Another pattern.go task
+	// Another task
 	g.Go(func() error {
 		// Simulate some task that might return an error
 		time.Sleep(5 * time.Second)

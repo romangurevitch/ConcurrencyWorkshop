@@ -8,6 +8,7 @@ import (
 	"os/signal"
 	"sync"
 	"syscall"
+	"time"
 
 	"github.com/romangurevitch/concurrencyworkshop/internal/goroutine/counter"
 )
@@ -267,5 +268,6 @@ func NonStoppingGoRoutineContextBonus(ctx context.Context) (int, bool) {
 }
 
 func inlinePrint(result int) {
+	time.Sleep(100 * time.Millisecond)
 	fmt.Print(yellow, cursorBack, result, reset)
 }
