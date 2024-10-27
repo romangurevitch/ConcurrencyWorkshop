@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/intermediate/poke/app"
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/intermediate/poke/client"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/intermediate/poke/app"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/intermediate/poke/client"
 )
 
 func main() {

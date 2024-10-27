@@ -7,13 +7,13 @@ GOFMT := gofmt -s
 GOFILES := $(shell find . -name "*.go" -type f)
 GOTEST := $(GO) test
 GOBENCH := $(GO) test -run=^$$ -bench .
-GOLANGCI_LINT_VERSION := v1.55.1
+GOLANGCI_LINT_VERSION := v1.61.0
 GOLANGCI_LINT_FILE := bin/golangci-lint
 GOLANGCI_LINT_VERSIONED := $(GOLANGCI_LINT_FILE)-$(GOLANGCI_LINT_VERSION)
 GOLINT := $(GOLANGCI_LINT_VERSIONED) run
 
 # Phony Targets
-.PHONY: help build test bench lint fmt tidy setup clean
+.PHONY: help build test bench lint fmt tidy setup clean update-deps
 
 # Help
 help:
@@ -34,6 +34,8 @@ help:
 	@echo "    Set up the necessary tools for linting."
 	@echo "  clean"
 	@echo "    Remove temporary files and compiled binaries."
+	@echo "  update-deps"
+	@echo "    Update all dependencies to their latest versions and tidy up the project."
 	@echo "  fixme-basic"
 	@echo "    Run basic tests for the 'fixme' challenge."
 	@echo "  fixme-intermediate"
@@ -76,7 +78,6 @@ implme-basic:
 	@echo "Running basic benchmarks..."
 	@$(GOBENCH) ./internal/challenge/implme/basic...
 
-
 # Test Targets for different components
 implme-intermediate:
 	@echo "Running intermediate tests..."
@@ -101,6 +102,13 @@ lint: $(GOLANGCI_LINT_VERSIONED)
 
 # Go mod tidy
 tidy:
+	@echo "Tidying up the go.mod and go.sum files..."
+	@$(GO) mod tidy
+
+# Update dependencies and tidy
+update-deps:
+	@echo "Updating all dependencies to their latest versions..."
+	@$(GO) get -u ./...
 	@echo "Tidying up the go.mod and go.sum files..."
 	@$(GO) mod tidy
 

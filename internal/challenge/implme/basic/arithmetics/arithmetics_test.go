@@ -70,7 +70,7 @@ func BenchmarkSequentialSum(b *testing.B) {
 func BenchmarkParallelSum(b *testing.B) {
 	for _, size := range inputSizes {
 		b.Run("InputSize="+strconv.Itoa(size), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
+			for i := 0; i < b.N; i++ { //nolint
 				ParallelSum(size)
 			}
 		})

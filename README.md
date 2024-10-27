@@ -30,11 +30,11 @@ Basic experience with command-line tools is required.
 1. **Clone the Repository**:
     - Run the following command to clone the repository to your local machine:
       ```bash
-      git clone https://github.com/romangurevitch/GopherCon2023.git
+      git clone https://github.com/romangurevitch/ConcurrencyWorkshop.git
       ```
     - Navigate to the project directory:
       ```bash
-      cd GopherCon2023
+      cd ConcurrencyWorkshop
       ```
 
 2. **Install or update Go to the latest version**:

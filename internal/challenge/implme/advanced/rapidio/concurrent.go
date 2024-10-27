@@ -3,7 +3,7 @@ package rapidio
 import (
 	"context"
 
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/advanced/rapidio/simulator"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/advanced/rapidio/simulator"
 )
 
 type concurrent struct {

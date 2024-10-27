@@ -5,8 +5,8 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/intermediate/poke/client"
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/intermediate/poke/client/mocks"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/intermediate/poke/client"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/intermediate/poke/client/mocks"
 )
 
 func Test_pokeAPP_OnChangedNonBlocking(t *testing.T) {
