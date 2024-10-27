@@ -34,6 +34,9 @@ jobs:
       - name: Load Cached Go modules
         run: go mod download
 
+      - name: Lint
+        run: make lint
+
       - name: Test
         run: make test
 
