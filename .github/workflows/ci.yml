@@ -50,6 +50,15 @@ jobs:
         with:
           go-version: 'stable'
 
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
       - name: Run basic fix me tests
         run: make fixme-basic
 
@@ -71,6 +80,15 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 'stable'
+
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
       - name: Run basic implement me tests
         run: make implme-basic
