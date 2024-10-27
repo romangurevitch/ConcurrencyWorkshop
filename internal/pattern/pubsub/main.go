@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
+	"strconv"
 	"sync"
 
 	"github.com/mtslzr/pokeapi-go"
@@ -34,7 +34,10 @@ func (ps *PubSub[T]) Unsubscribe(topic string, ch chan Result[T]) {
 	if !ok {
 		return // no subscribers for this topic
 	}
-	subscribers := value.([]chan Result[T])
+	subscribers, ok := value.([]chan Result[T])
+	if !ok {
+		return
+	}
 	for i, subscriber := range subscribers {
 		if subscriber == ch {
 			// Remove the subscriber from the slice
@@ -49,7 +52,10 @@ func (ps *PubSub[T]) Publish(topic string, message T) {
 	if !ok {
 		return // no subscribers for this topic
 	}
-	subscribers := value.([]chan Result[T])
+	subscribers, ok := value.([]chan Result[T])
+	if !ok {
+		return
+	}
 	for _, ch := range subscribers {
 		select {
 		case ch <- Result[T]{Value: message}:
@@ -60,7 +66,7 @@ func (ps *PubSub[T]) Publish(topic string, message T) {
 
 // fetchPokemon fetches Pokémon data for a given ID.
 func fetchPokemon(_ context.Context, pokeID int) (structs.Pokemon, error) {
-	return pokeapi.Pokemon(fmt.Sprint(pokeID))
+	return pokeapi.Pokemon(strconv.Itoa(pokeID))
 }
 
 func main() {

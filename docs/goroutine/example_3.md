@@ -24,11 +24,11 @@ func LetsMakeASmallChange() int {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="LetsMakeASmallChange$" 
+  go test ../../internal/goroutine -v -count=1 -run="LetsMakeASmallChange$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="LetsMakeASmallChange$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="LetsMakeASmallChange$" -race 
 ```
 
 <table>

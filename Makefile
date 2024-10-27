@@ -13,7 +13,7 @@ GOLANGCI_LINT_VERSIONED := $(GOLANGCI_LINT_FILE)-$(GOLANGCI_LINT_VERSION)
 GOLINT := $(GOLANGCI_LINT_VERSIONED) run
 
 # Phony Targets
-.PHONY: help build test bench lint fmt tidy setup clean update-deps
+.PHONY: help build test bench lint fmt tidy setup clean update-deps fmt
 
 # Help
 help:
@@ -100,8 +100,13 @@ lint: $(GOLANGCI_LINT_VERSIONED)
 	@echo "Linting the code..."
 	@$(GOLINT)
 
+# Formatting Go source files
+fmt:
+	@echo "Formatting Go source files..."
+	@$(GOFMT) -w $(GOFILES)
+
 # Go mod tidy
-tidy:
+tidy: fmt
 	@echo "Tidying up the go.mod and go.sum files..."
 	@$(GO) mod tidy
 

@@ -51,7 +51,6 @@ func FanOut[T any, U any](ctx context.Context, jobs []Job[T], processFunc Proces
 				}(job)
 			}
 		}
-
 	}()
 
 	return results

@@ -35,7 +35,7 @@ func runDefaultSimulation(t *testing.T, ctx context.Context, rapidIO RapidIO, re
 	rapidIO.Wait()
 	slog.Info("Finished reading events", "number of events", sm.EventCount())
 
-	require.Equal(t, int(sm.EventCount()), len(rapidIO.Results()))
+	require.Len(t, rapidIO.Results(), int(sm.EventCount()))
 	return plotter.Plot(rapidIO.Results(), resultsFilename)
 }
 

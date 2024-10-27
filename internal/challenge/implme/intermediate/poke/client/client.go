@@ -15,7 +15,7 @@ type Poke struct {
 
 //go:generate  go run github.com/vektra/mockery/v2@v2.20.0 --with-expecter=true --name PokeClient
 type PokeClient interface {
-	FetchPokemon(ID string) (*structs.Pokemon, error)
+	FetchPokemon(id string) (*structs.Pokemon, error)
 }
 
 func New() PokeClient {
@@ -25,8 +25,8 @@ func New() PokeClient {
 type pokeClient struct {
 }
 
-func (p pokeClient) FetchPokemon(ID string) (*structs.Pokemon, error) {
-	pokemon, err := pokeapi.Pokemon(strings.TrimSpace(ID))
+func (p pokeClient) FetchPokemon(id string) (*structs.Pokemon, error) {
+	pokemon, err := pokeapi.Pokemon(strings.TrimSpace(id))
 	if err != nil {
 		return nil, err
 	}

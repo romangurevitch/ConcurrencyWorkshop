@@ -24,11 +24,11 @@ func UnexpectedResultFix() int {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="UnexpectedResultFix$" 
+  go test ../../internal/goroutine -v -count=1 -run="UnexpectedResultFix$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="UnexpectedResultFix$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="UnexpectedResultFix$" -race 
 ```
 
 <table>

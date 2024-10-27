@@ -27,11 +27,11 @@ func NonStoppingGoRoutineWithShutdown() (int, bool) {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineWithShutdown$" 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineWithShutdown$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineWithShutdown$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineWithShutdown$" -race 
 ```
 
 <table>
@@ -43,12 +43,12 @@ func NonStoppingGoRoutineWithShutdown() (int, bool) {
 <tbody>
   <tr>
     <td>Correct result?</td>
-    <td><img height="40" src="../images/question.svg" width="40" alt="?"/></td>
+    <td><img height="40" src="../images/no.png" width="40" alt="?"/></td> 
     <td rowspan="3"><img height="320" src="https://media.giphy.com/media/Jq824R93JsLwZCaiSL/giphy.gif" width="320" alt="?"/></td>
   </tr> 
   <tr>
     <td>No race conditions?</td>
-    <td><img height="40" src="../images/yes.png" width="40" alt="?"/></td> 
+    <td><img height="40" src="../images/no.png" width="40" alt="?"/></td> 
   </tr>
   <tr>
     <td>Error handling and gracefully shutdown?</td>

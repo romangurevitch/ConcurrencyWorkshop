@@ -67,7 +67,7 @@ func TestNonStoppingGoRoutineCorrectShutdown(t *testing.T) {
 }
 
 // Using OS signals to catch termination signal to print out simpleCounter results.
-// Using context
+// Using context.
 func TestNonStoppingGoRoutineContext(t *testing.T) {
 	fmt.Println(white, "Working, press ^C to stop, timout after 5 seconds", reset)
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)
@@ -78,7 +78,7 @@ func TestNonStoppingGoRoutineContext(t *testing.T) {
 }
 
 // Using OS signals to catch termination signal to print out simpleCounter results.
-// Using context
+// Using context.
 func TestNonStoppingGoRoutineContextBetter(t *testing.T) {
 	fmt.Println(white, "Working, press ^C to stop, timout after 5 seconds", reset)
 	ctx, cancelFunc := context.WithTimeout(context.Background(), 5*time.Second)

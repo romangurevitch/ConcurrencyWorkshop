@@ -36,11 +36,11 @@ func NonStoppingGoRoutineContextBonus(ctx context.Context) (int, bool) {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineContextBonus$" 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineContextBonus$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineContextBonus$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineContextBonus$" -race 
 ```
 
 <table>

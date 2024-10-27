@@ -2,8 +2,8 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
+	"strconv"
 	"sync"
 	"time"
 
@@ -61,7 +61,7 @@ func CreateWorkerPool[T any, U any](ctx context.Context, numWorkers int, jobs <-
 
 // FetchPokemonName just returns the Pokemon name as a string.
 func FetchPokemonName(_ context.Context, pokemonID int) (string, error) {
-	pokemon, err := pokeapi.Pokemon(fmt.Sprint(pokemonID))
+	pokemon, err := pokeapi.Pokemon(strconv.Itoa(pokemonID))
 	if err != nil {
 		return "", err
 	}

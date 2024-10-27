@@ -116,7 +116,7 @@ func TestProducerConsumer(t *testing.T) {
 func TestWithContext(t *testing.T) {
 	ch := make(chan int)                                                           // Create a new channel
 	ctx, cancel := context.WithTimeout(context.Background(), 100*time.Millisecond) // Create a context with a timeout
-	defer cancel()                                                                 // Ensure the context is cancelled to release resources
+	defer cancel()                                                                 // Ensure the context is canceled to release resources
 
 	// Goroutine: attempts to send a value into the channel, but exits if the context expires first
 	go func() {

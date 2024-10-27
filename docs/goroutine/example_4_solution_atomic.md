@@ -24,11 +24,11 @@ func FinallySomethingWorksAsExpectedAtomicCounter() int {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpectedAtomicCounter$" 
+  go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpectedAtomicCounter$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpectedAtomicCounter$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpectedAtomicCounter$" -race 
 ```
 
 <table>

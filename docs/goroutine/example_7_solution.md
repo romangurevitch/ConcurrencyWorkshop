@@ -36,11 +36,11 @@ func NonStoppingGoRoutineCorrectShutdown() (int, bool) {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineCorrectShutdown$" 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineCorrectShutdown$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineCorrectShutdown$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="NonStoppingGoRoutineCorrectShutdown$" -race 
 ```
 
 <table>

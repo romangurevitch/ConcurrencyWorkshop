@@ -28,11 +28,11 @@ func FinallySomethingWorksAsExpected() int {
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpected$" 
+  go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpected$" 
 ```
 
 ```bash
- clear; go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpected$" -race 
+  go test ../../internal/goroutine -v -count=1 -run="FinallySomethingWorksAsExpected$" -race 
 ```
 
 <table>
