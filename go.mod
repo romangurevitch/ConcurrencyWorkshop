@@ -1,4 +1,4 @@
-module github.com/romangurevitch/gophercon2023
+module github.com/romangurevitch/concurrencyworkshop
 
 go 1.23.2
 

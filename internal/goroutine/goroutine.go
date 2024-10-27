@@ -9,7 +9,7 @@ import (
 	"sync"
 	"syscall"
 
-	"github.com/romangurevitch/gophercon2023/internal/goroutine/counter"
+	"github.com/romangurevitch/concurrencyworkshop/internal/goroutine/counter"
 )
 
 var reset = "\033[0m"

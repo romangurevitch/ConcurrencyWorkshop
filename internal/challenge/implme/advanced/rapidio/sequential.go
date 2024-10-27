@@ -5,7 +5,7 @@ import (
 	"log/slog"
 	"sync"
 
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/advanced/rapidio/simulator"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/advanced/rapidio/simulator"
 )
 
 // sequential is a type that implements the RapidIO interface sequentially.

@@ -8,8 +8,8 @@ import (
 
 	"github.com/stretchr/testify/require"
 
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/advanced/rapidio/plotter"
-	"github.com/romangurevitch/gophercon2023/internal/challenge/implme/advanced/rapidio/simulator"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/advanced/rapidio/plotter"
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/implme/advanced/rapidio/simulator"
 )
 
 func TestSequential(t *testing.T) {
