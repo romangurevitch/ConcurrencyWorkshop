@@ -50,7 +50,7 @@ help:
 	@echo "    Run advanced tests for the 'implme' advanced challenge."
 
 # Test Targets for different components
-test:
+test: lint
 	@echo "Testing concurrency components..."
 	@$(GOTEST) ./internal/concurrency/...
 	@echo "Testing pattern components..."
