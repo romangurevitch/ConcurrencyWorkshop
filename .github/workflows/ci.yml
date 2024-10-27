@@ -4,7 +4,6 @@ on:
   push:
     branches: [ main ]
   pull_request:
-    # This will trigger the workflow for pull requests to all branches
     branches:
       - '**'
 
@@ -16,16 +15,16 @@ jobs:
 
     steps:
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: '1.23.x'
+          go-version: 'latest'
 
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Cache Go modules
         id: cache-modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
@@ -44,18 +43,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: '1.21.x'
+          go-version: 'latest'
 
       - name: Retrieve cached modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
-          key: ${{ needs.build.outputs.cache-key }}
+          key: ${{ needs.test.outputs.cache-key }}
 
       - name: Run basic fix me tests
         run: make fixme-basic
@@ -72,18 +71,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v3
+        uses: actions/setup-go@v4
         with:
-          go-version: '1.21.x'
+          go-version: 'latest'
 
       - name: Retrieve cached modules
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
-          key: ${{ needs.build.outputs.cache-key }}
+          key: ${{ needs.test.outputs.cache-key }}
 
       - name: Run basic implement me tests
         run: make implme-basic
