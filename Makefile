@@ -51,8 +51,8 @@ help:
 
 # Test Targets for different components
 test:
-	@echo "Testing concurrency components..."
-	@$(GOTEST) ./internal/concurrency/...
+	@echo "Testing concurrency building blocks..."
+	@$(GOTEST) ./internal/buildingblocks/...
 	@echo "Testing pattern components..."
 	@$(GOTEST) ./internal/pattern/...
 
@@ -90,8 +90,8 @@ implme-advanced:
 
 # Benchmark Targets for different components
 bench:
-	@echo "Benchmarking concurrency components..."
-	@$(GOBENCH) ./internal/concurrency/...
+	@echo "Benchmarking concurrency buildingblocks..."
+	@$(GOBENCH) ./internal/buildingblocks/...
 	@echo "Benchmarking pattern components..."
 	@$(GOBENCH) ./internal/pattern/...
 
