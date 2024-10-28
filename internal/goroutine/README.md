@@ -23,12 +23,12 @@ During the demo I will ask you 3 questions:
 
 ### Concurrency building blocks
 
-* [WaitGroup](../concurrency/sync/waitgroup/README.md)
-* [Locks](../concurrency/sync/locks/README.md)
-* [Atomic](../concurrency/sync/atomic/README.md)
-* [Channels](../concurrency/channel/README.md)
-* [Signals](../concurrency/signal/README.md)
-* [Context](../concurrency/context/README.md)
+* [WaitGroup](../buildingblocks/sync/waitgroup/README.md)
+* [Locks](../buildingblocks/sync/locks/README.md)
+* [Atomic](../buildingblocks/sync/atomic/README.md)
+* [Channels](../buildingblocks/channel/README.md)
+* [Signals](../buildingblocks/signal/README.md)
+* [Context](../buildingblocks/context/README.md)
 
 ### Examples
 

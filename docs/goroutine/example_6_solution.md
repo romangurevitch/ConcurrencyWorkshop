@@ -1,6 +1,6 @@
 # 6. Let's handle shutdown gracefully?
 
-[Basic counter](counter/basic.md) | [Race detection](race/race.md) | [WaitGroup](../../internal/concurrency/sync/waitgroup/README.md) | [Mutex counter](counter/mutex.md) | [Atomic counter](counter/atomic.md) | [Channels](../../internal/concurrency/channel/README.md) | [Signals](../../internal/concurrency/signal/README.md)
+[Basic counter](counter/basic.md) | [Race detection](race/race.md) | [WaitGroup](../../internal/buildingblocks/sync/waitgroup/README.md) | [Mutex counter](counter/mutex.md) | [Atomic counter](counter/atomic.md) | [Channels](../../internal/buildingblocks/channel/README.md) | [Signals](../../internal/buildingblocks/signal/README.md)
 
 ```go
 package concurrency

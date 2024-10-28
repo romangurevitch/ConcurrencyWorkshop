@@ -1,6 +1,6 @@
 # 3. Let's make a small change :)
 
-[Basic counter](counter/basic.md) | [Race detection](race/race.md) | [WaitGroup](../../internal/concurrency/sync/waitgroup/README.md)
+[Basic counter](counter/basic.md) | [Race detection](race/race.md) | [WaitGroup](../../internal/buildingblocks/sync/waitgroup/README.md)
 
 ```go
 package concurrency
