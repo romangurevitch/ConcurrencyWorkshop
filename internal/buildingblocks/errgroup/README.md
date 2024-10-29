@@ -35,20 +35,26 @@ err := g.Wait()
 
 ## Use Cases
 
-- **Concurrent Error Handling**: Executing multiple goroutines and aggregating their errors.
-- **Context Propagation**: Propagating context and cancellation signals across a group of goroutines.
+- **Concurrent Error Handling**: 
+  - Executing multiple goroutines and aggregating their errors.
+- **Context Propagation**: 
+  - Propagating context and cancellation signals across a group of goroutines.
 
 ## Common Pitfalls
 
-- **Error Ignorance**: Ignoring errors returned by `Group.Go`.
-- **Misusing Context**: Misusing the context returned by `errgroup.WithContext` can lead to unintended behavior. For
-  instance, storing values in the context that are supposed to be accessed by goroutines may lead to race conditions if
-  not handled properly.
+- **Error Ignorance**:
+  - Ignoring errors returned by `Group.Go`.
+- **Misusing Context**:
+  - Misusing the context returned by `errgroup.WithContext` can lead to unintended behavior.  
+    For instance, storing values in the context that are supposed to be accessed by goroutines may lead to race
+    conditions if not handled properly.
 
 ## Best Practices
 
-- **Error Handling**: Always handle errors returned by `Group.Go`.
-- **Context Usage**: Use the context returned by `errgroup.WithContext` to propagate cancelation.
+- **Error Handling**: 
+  - Always handle errors returned by `Group.Go`.
+- **Context Usage**: 
+  - Use the context returned by `errgroup.WithContext` to propagate cancellation.
 
 ## Resources
 

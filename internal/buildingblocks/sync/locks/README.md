@@ -17,9 +17,10 @@ locks to manage access to shared resources.
 
 ## Introduction to Locks
 
-Locks are fundamental for managing concurrent access to shared resources. They ensure that only one goroutine can access
-a resource at a time, preventing data races and ensuring data consistency. Two primary types of locks are provided in
-Go's `sync` package: `Mutex` and `RWMutex`.
+Locks are fundamental for managing concurrent access to shared resources.  
+They ensure that only one goroutine can access a resource at a time, preventing data races and ensuring data
+consistency.  
+Two primary types of locks are provided in Go's `sync` package: `Mutex` and `RWMutex`.
 
 ## Mutex
 
@@ -76,9 +77,12 @@ and ensure data consistency.
 
 ## Common Pitfalls
 
-- Deadlocks: Forgetting to unlock a mutex or locking it multiple times without unlocking can lead to deadlocks.
-- Runtime Panics: Unlocking a mutex that is not locked or in the wrong goroutine can cause runtime panics.
-- Starvation: Excessive use of write locks can starve readers in the case of `RWMutex`.
+- **Deadlocks**: 
+  - Forgetting to unlock a mutex or locking it multiple times without unlocking can lead to deadlocks.
+- **Runtime Panics**: 
+  - Unlocking a mutex that is not locked or in the wrong goroutine can cause runtime panics.
+- **Starvation**: 
+  - Excessive use of write locks can starve readers in the case of `RWMutex`.
 
 ## Best Practices
 
