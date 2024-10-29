@@ -1,8 +1,10 @@
 # Understanding the Publish/Subscribe (Pub/Sub) Pattern in Go
 
-The Publish/Subscribe (Pub/Sub) pattern is a messaging paradigm where senders (publishers) distribute messages without needing to know the recipients (subscribers), and subscribers receive messages without knowing the senders. This decoupling of publishers and subscribers allows for a flexible, scalable, and maintainable architecture, especially in event-driven systems.
+The Publish/Subscribe (Pub/Sub) pattern is a messaging paradigm where senders (publishers) distribute messages without needing to know the recipients (subscribers), and subscribers receive messages without knowing the senders.  
+This decoupling of publishers and subscribers allows for a flexible, scalable, and maintainable architecture, especially in event-driven systems.
 
-This guide will explain how to implement and use the Pub/Sub pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
+This guide will explain how to implement and use the Pub/Sub pattern in Go, focusing on practical aspects, common issues, and best practices.  
+We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -18,7 +20,8 @@ This guide will explain how to implement and use the Pub/Sub pattern in Go, focu
 
 ## Introduction
 
-In Go, the Pub/Sub pattern can be implemented using channels and goroutines, leveraging Go's concurrency primitives to build an efficient messaging system. Publishers send messages to a topic, and all subscribers to that topic receive the messages asynchronously.
+In Go, the Pub/Sub pattern can be implemented using channels and goroutines, leveraging Go's concurrency primitives to build an efficient messaging system.  
+Publishers send messages to a topic, and all subscribers to that topic receive the messages asynchronously.
 
 ![Pub/Sub Diagram](../../../docs/images/pubsub_graph.png)
 
@@ -34,7 +37,8 @@ This pattern is particularly beneficial when dealing with:
 
 See [main.go](main.go)
 
-The implementation uses a `PubSub` struct to manage topics and their subscribers. Subscribers can subscribe to topics, and publishers can publish messages to topics without knowledge of who the subscribers are.
+The implementation uses a `PubSub` struct to manage topics and their subscribers.  
+Subscribers can subscribe to topics, and publishers can publish messages to topics without knowledge of who the subscribers are.
 
 **Key Components:**
 
@@ -152,7 +156,8 @@ close(subscriberCh) // Close the channel if no longer needed
 
 ### 2. Proper Error Handling
 
-- **Capture and Handle Errors**: Use the `Result[T]` type to encapsulate messages and errors. Ensure that errors are checked and handled appropriately by subscribers.
+- **Capture and Handle Errors**: Use the `Result[T]` type to encapsulate messages and errors.  
+Ensure that errors are checked and handled appropriately by subscribers.
 
 ### 3. Buffer Subscriber Channels Appropriately
 
@@ -160,7 +165,8 @@ close(subscriberCh) // Close the channel if no longer needed
 
 ### 4. Avoid Blocking Operations in Publishers
 
-- **Non-Blocking Publish**: Ensure that the `Publish` method does not block indefinitely due to slow subscribers. Use non-blocking sends or implement timeouts.
+- **Non-Blocking Publish**: Ensure that the `Publish` method does not block indefinitely due to slow subscribers.  
+Use non-blocking sends or implement timeouts.
 
 ### 5. Clean Up Resources
 

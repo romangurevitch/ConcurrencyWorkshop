@@ -1,8 +1,10 @@
 # Understanding the Fan-Out/Fan-In Design Pattern in Go
 
-The Fan-Out/Fan-In design pattern is a fundamental concept in concurrent programming, where multiple tasks are distributed among several goroutines (**fan-out**), and their results are collected and combined into a single channel or data structure (**fan-in**). This pattern leverages Go's powerful concurrency primitives—goroutines and channels—to perform tasks in parallel, improving the performance and scalability of your applications.
+The Fan-Out/Fan-In design pattern is a fundamental concept in concurrent programming, where multiple tasks are distributed among several goroutines (**fan-out**), and their results are collected and combined into a single channel or data structure (**fan-in**).  
+This pattern leverages Go's powerful concurrency primitives—goroutines and channels—to perform tasks in parallel, improving the performance and scalability of your applications.
 
-This guide will explain how to implement and use the Fan-Out/Fan-In pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a concrete implementation and demonstrate how to integrate it into your projects.
+This guide will explain how to implement and use the Fan-Out/Fan-In pattern in Go, focusing on practical aspects, common issues, and best practices.  
+We'll walk through a concrete implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -19,7 +21,8 @@ This guide will explain how to implement and use the Fan-Out/Fan-In pattern in G
 
 ## Introduction
 
-In Go, the Fan-Out/Fan-In pattern leverages goroutines and channels to perform concurrent operations efficiently. The **fan-out** phase involves spawning multiple goroutines to perform tasks in parallel, while the **fan-in** phase involves collecting the results from these goroutines back into a single channel or aggregated result.
+In Go, the Fan-Out/Fan-In pattern leverages goroutines and channels to perform concurrent operations efficiently.  
+The **fan-out** phase involves spawning multiple goroutines to perform tasks in parallel, while the **fan-in** phase involves collecting the results from these goroutines back into a single channel or aggregated result.
 
 ![Fan-Out/Fan-In Diagram](../../../docs/images/fanout_in_graph.png)
 
@@ -35,7 +38,8 @@ This pattern is particularly beneficial when dealing with:
 
 See [main.go](main.go)
 
-To implement the Fan-Out/Fan-In pattern, you can create a function that spawns a goroutine for each job and collects the results via a channel. The provided implementation uses generics to allow flexibility with different data types.
+To implement the Fan-Out/Fan-In pattern, you can create a function that spawns a goroutine for each job and collects the results via a channel.  
+The provided implementation uses generics to allow flexibility with different data types.
 
 **Key Components:**
 
@@ -50,7 +54,8 @@ To implement the Fan-Out/Fan-In pattern, you can create a function that spawns a
 
 ### Step 1: Define the Process Function
 
-Create a function that matches the `ProcessFunc[T, U]` signature. This function performs the processing task.
+Create a function that matches the `ProcessFunc[T, U]` signature.  
+This function performs the processing task.
 
 ```go
 func processData(ctx context.Context, value T) (U, error) {
@@ -143,7 +148,8 @@ for result := range results {
 
 **Issue**: Concurrent access to shared variables without proper synchronization can cause race conditions.
 
-**Solution**: Avoid shared mutable state. If necessary, use synchronization primitives like mutexes to protect shared data.
+**Solution**: Avoid shared mutable state.  
+If necessary, use synchronization primitives like mutexes to protect shared data.
 
 ---
 

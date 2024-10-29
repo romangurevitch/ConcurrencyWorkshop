@@ -1,8 +1,10 @@
 # Understanding the Pipeline Design Pattern in Go
 
-The Pipeline design pattern is a powerful concurrency model in Go that allows for processing data through a series of stages, where each stage performs a specific operation. This pattern enables efficient data processing by leveraging Go's goroutines and channels to create a chain of processing steps, improving the performance and scalability of your applications.
+The Pipeline design pattern is a powerful concurrency model in Go that allows for processing data through a series of stages, where each stage performs a specific operation.  
+This pattern enables efficient data processing by leveraging Go's goroutines and channels to create a chain of processing steps, improving the performance and scalability of your applications.
 
-This guide will explain how to implement and use the Pipeline pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
+This guide will explain how to implement and use the Pipeline pattern in Go, focusing on practical aspects, common issues, and best practices.  
+We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -19,7 +21,8 @@ This guide will explain how to implement and use the Pipeline pattern in Go, foc
 
 ## Introduction
 
-In Go, the Pipeline pattern involves setting up a series of stages connected by channels, where each stage is a goroutine that processes data and passes the result to the next stage. This pattern is particularly useful for processing streams of data, transforming data through multiple steps, and handling complex workflows.
+In Go, the Pipeline pattern involves setting up a series of stages connected by channels, where each stage is a goroutine that processes data and passes the result to the next stage.  
+This pattern is particularly useful for processing streams of data, transforming data through multiple steps, and handling complex workflows.
 
 ![Pipeline Diagram](../../../docs/images/pipeline_graph.png)
 
@@ -29,7 +32,9 @@ This pattern is beneficial when dealing with:
 - **Concurrent Processing**: Leveraging multiple CPU cores to process data in parallel.
 - **Modular Design**: Breaking down complex processing into manageable, reusable components.
 
-**Note:** In this implementation, each stage operates with a single goroutine, processing one item at a time in the order they are received. This design keeps the implementation simple and predictable. However, you can extend this pattern to allow each stage to process multiple items concurrently by incorporating worker pools or similar concurrency mechanisms within each stage.
+**Note:** In this implementation, each stage operates with a single goroutine, processing one item at a time in the order they are received.  
+This design keeps the implementation simple and predictable.  
+However, you can extend this pattern to allow each stage to process multiple items concurrently by incorporating worker pools or similar concurrency mechanisms within each stage.
 
 ---
 
@@ -37,7 +42,9 @@ This pattern is beneficial when dealing with:
 
 See [main.go](main.go)
 
-The implementation uses a generic `Pipe` function to create pipeline stages. Each stage reads from an input channel, processes the data using a provided function, and sends the result to an output channel. The stages are connected together to form a pipeline.
+The implementation uses a generic `Pipe` function to create pipeline stages.  
+Each stage reads from an input channel, processes the data using a provided function, and sends the result to an output channel.  
+The stages are connected together to form a pipeline.
 
 **Key Components:**
 
@@ -51,7 +58,8 @@ The implementation uses a generic `Pipe` function to create pipeline stages. Eac
 
 ### Step 1: Define the Processing Functions
 
-Create functions that match the `ProcessFunc[T, U]` signature. Each function represents a stage in the pipeline.
+Create functions that match the `ProcessFunc[T, U]` signature.  
+Each function represents a stage in the pipeline.
 
 ```go
 func processStage1(ctx context.Context, input Result[T]) Result[U] {
@@ -107,7 +115,8 @@ stage2Ch := Pipe(ctx, stage1Ch, processStage2)
 // Continue chaining stages as needed.
 ```
 
-**Note:** In this implementation, each `Pipe` function starts a single goroutine for the stage, processing one item at a time in the order they are received. If you need to process multiple items concurrently within a stage, consider extending the `Pipe` function to include a worker pool or similar concurrency mechanism.
+**Note:** In this implementation, each `Pipe` function starts a single goroutine for the stage, processing one item at a time in the order they are received.  
+If you need to process multiple items concurrently within a stage, consider extending the `Pipe` function to include a worker pool or similar concurrency mechanism.
 
 ### Step 4: Consume the Output
 
@@ -149,7 +158,8 @@ for result := range stage2Ch {
 
 **Issue**: Errors may not be properly propagated through the pipeline, leading to incorrect results or silent failures.
 
-**Solution**: Use the `Result[T]` type to encapsulate both the value and any errors. Check for errors at each stage and handle them appropriately.
+**Solution**: Use the `Result[T]` type to encapsulate both the value and any errors.  
+Check for errors at each stage and handle them appropriately.
 
 ---
 

@@ -1,11 +1,12 @@
 # Understanding the Future Design Pattern in Go
 
-The Future design pattern is a concurrency pattern that represents a result that will become available at some point in
-the future. It's particularly useful for handling asynchronous computations and can significantly improve the
+The Future design pattern is a concurrency pattern that represents a result that will become available at some point in the future.  
+It's particularly useful for handling asynchronous computations and can significantly improve the
 performance and responsiveness of your Go applications.
 
 This guide will explain how to implement and use the Future pattern in Go, focusing on practical aspects, common issues,
-and best practices. We'll walk through a concrete implementation and demonstrate how to integrate it into your projects.
+and best practices.  
+We'll walk through a concrete implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -22,7 +23,8 @@ and best practices. We'll walk through a concrete implementation and demonstrate
 
 ## Introduction
 
-In Go, the Future pattern can be implemented using goroutines and channels. It allows you to start a computation
+In Go, the Future pattern can be implemented using goroutines and channels.  
+It allows you to start a computation
 asynchronously and retrieve the result later, enabling non-blocking execution and better resource utilization.
 
 <img src="../../../docs/images/future_graph.png" alt="drawing" height="300"/>
@@ -56,7 +58,8 @@ The `Future` uses a channel to deliver the result once it's available and handle
 
 ### Step 1: Define the Process Function
 
-Create a function that matches the `ProcessFunc[T]` signature. This function performs the asynchronous task.
+Create a function that matches the `ProcessFunc[T]` signature.  
+This function performs the asynchronous task.
 
 ```go
 func fetchData(ctx context.Context) (DataType, error) {
@@ -82,7 +85,8 @@ While the `Future` is computing, you can perform other operations without blocki
 
 ### Step 4: Retrieve the Result
 
-Call the `Result()` method to get the computation result. This call will block until the result is available.
+Call the `Result()` method to get the computation result.  
+This call will block until the result is available.
 
 ```go
 result := future.Result()
@@ -107,7 +111,8 @@ prevent indefinite blocking.
 ### 2. Ignoring Context Cancellation When Implementing Future
 
 **Issue**: If the Future implementation does not respect context cancellation, it may not return promptly when the
-context is canceled. This can lead to the `Result()` method blocking indefinitely or unnecessary computations continuing
+context is canceled.  
+This can lead to the `Result()` method blocking indefinitely or unnecessary computations continuing
 in the background.
 
 **Solution**: Ensure that the Future implementation checks for context cancellation before starting the computation and

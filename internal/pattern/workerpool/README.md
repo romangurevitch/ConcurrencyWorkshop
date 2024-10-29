@@ -1,8 +1,10 @@
 # Understanding the Worker Pool Pattern in Go
 
-The Worker Pool pattern is a design pattern in Go that allows you to manage and reuse a fixed number of worker goroutines to process multiple tasks concurrently. This pattern helps control the level of concurrency, preventing resource exhaustion, and can improve the performance of your applications by efficiently utilizing system resources.
+The Worker Pool pattern is a design pattern in Go that allows you to manage and reuse a fixed number of worker goroutines to process multiple tasks concurrently.  
+This pattern helps control the level of concurrency, preventing resource exhaustion, and can improve the performance of your applications by efficiently utilizing system resources.
 
-This guide will explain how to implement and use the Worker Pool pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
+This guide will explain how to implement and use the Worker Pool pattern in Go, focusing on practical aspects, common issues, and best practices.  
+We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -19,7 +21,8 @@ This guide will explain how to implement and use the Worker Pool pattern in Go, 
 
 ## Introduction
 
-In Go, the Worker Pool pattern involves creating a fixed number of worker goroutines that process tasks from a shared job queue and send results to a shared result queue. This pattern is particularly useful when you have a large number of tasks to process and want to limit the number of concurrent goroutines to prevent overwhelming the system.
+In Go, the Worker Pool pattern involves creating a fixed number of worker goroutines that process tasks from a shared job queue and send results to a shared result queue.  
+This pattern is particularly useful when you have a large number of tasks to process and want to limit the number of concurrent goroutines to prevent overwhelming the system.
 
 ![Worker Pool Diagram](../../../docs/images/worker_pool_graph.png)
 
@@ -35,7 +38,8 @@ This pattern is beneficial when dealing with:
 
 See [main.go](main.go)
 
-The implementation uses goroutines and channels to create a pool of workers that process jobs concurrently. A fixed number of worker goroutines are started, each pulling jobs from the `jobs` channel and sending results to the `results` channel.
+The implementation uses goroutines and channels to create a pool of workers that process jobs concurrently.  
+A fixed number of worker goroutines are started, each pulling jobs from the `jobs` channel and sending results to the `results` channel.
 
 **Key Components:**
 
@@ -51,7 +55,8 @@ The implementation uses goroutines and channels to create a pool of workers that
 
 ### Step 1: Define the Processing Function
 
-Create a function that matches the `ProcessFunc[T, U]` signature. This function performs the processing task.
+Create a function that matches the `ProcessFunc[T, U]` signature.  
+This function performs the processing task.
 
 ```go
 func processData(ctx context.Context, value T) (U, error) {
@@ -121,7 +126,8 @@ defer cancel()
 
 **Solution**:
 
-- **Closing Channels**: Ensure that the `jobs` channel is closed after all jobs have been sent. In the `CreateWorkerPool` function, the `results` channel is closed after all workers have finished processing.
+- **Closing Channels**: Ensure that the `jobs` channel is closed after all jobs have been sent.  
+In the `CreateWorkerPool` function, the `results` channel is closed after all workers have finished processing.
 
 ```go
 go func() {

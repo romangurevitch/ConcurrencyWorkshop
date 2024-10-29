@@ -1,8 +1,10 @@
 # Understanding the Dynamic Rate-Limited Worker Pool Pattern in Go
 
-The Dynamic Rate-Limited Worker Pool pattern is an advanced concurrency model in Go that controls the rate at which workers process jobs. It ensures that the system handles workloads efficiently without overwhelming resources or external systems, especially when dealing with rate-limited APIs or services.
+The Dynamic Rate-Limited Worker Pool pattern is an advanced concurrency model in Go that controls the rate at which workers process jobs.  
+It ensures that the system handles workloads efficiently without overwhelming resources or external systems, especially when dealing with rate-limited APIs or services.
 
-This guide will explain how to implement and use the Dynamic Rate-Limited Worker Pool pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
+This guide will explain how to implement and use the Dynamic Rate-Limited Worker Pool pattern in Go, focusing on practical aspects, common issues, and best practices.  
+We'll walk through a step-by-step implementation and demonstrate how to integrate it into your projects.
 
 ---
 
@@ -19,7 +21,8 @@ This guide will explain how to implement and use the Dynamic Rate-Limited Worker
 
 ## Introduction
 
-In Go, the Dynamic Rate-Limited Worker Pool pattern combines the concepts of worker pools and rate limiting to process jobs at a controlled rate. This is particularly useful when interacting with external systems that impose rate limits or when you need to manage resource consumption carefully.
+In Go, the Dynamic Rate-Limited Worker Pool pattern combines the concepts of worker pools and rate limiting to process jobs at a controlled rate.  
+This is particularly useful when interacting with external systems that impose rate limits or when you need to manage resource consumption carefully.
 
 ![Dynamic Rate-Limited Worker Pool Diagram](../../../docs/images/dynamic_graph.png)
 
@@ -35,7 +38,8 @@ This pattern is beneficial when dealing with:
 
 See [main.go](main.go)
 
-To implement the Dynamic Rate-Limited Worker Pool pattern, you can create a worker pool that processes jobs from a channel at a controlled rate using Go's `rate.Limiter`. The provided implementation uses generics for flexibility with different data types.
+To implement the Dynamic Rate-Limited Worker Pool pattern, you can create a worker pool that processes jobs from a channel at a controlled rate using Go's `rate.Limiter`.  
+The provided implementation uses generics for flexibility with different data types.
 
 **Key Components:**
 
@@ -51,7 +55,8 @@ To implement the Dynamic Rate-Limited Worker Pool pattern, you can create a work
 
 ### Step 1: Define the Process Function
 
-Create a function that matches the `ProcessFunc[T, U]` signature. This function performs the processing task.
+Create a function that matches the `ProcessFunc[T, U]` signature.  
+This function performs the processing task.
 
 ```go
 func processData(ctx context.Context, dataType DataType) (string, error) {
@@ -120,7 +125,8 @@ for result := range results {
 
 **Issue**: Setting an inappropriate rate limit could still lead to resource exhaustion or underutilization.
 
-**Solution**: Carefully choose the rate limits based on the capacity of external systems and available resources. Monitor and adjust the rate dynamically if necessary.
+**Solution**: Carefully choose the rate limits based on the capacity of external systems and available resources.  
+Monitor and adjust the rate dynamically if necessary.
 
 ### 2. Error Handling
 
