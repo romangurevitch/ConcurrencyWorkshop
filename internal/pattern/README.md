@@ -5,14 +5,12 @@
 1. [Why Concurrency Matters](#why-concurrency-matters)
 2. [Real-Life Problems and Solutions Summary](#real-life-problems-and-solutions-summary)
 3. [Concurrent Design Patterns Examples in Go](#concurrent-design-patterns-examples-in-go)
-
-- [Future](#future)
-- [Pipeline](#pipeline)
-- [Fan-Out/Fan-In](#fan-outfan-in)
-- [Worker Pool](#worker-pool)
-- [Dynamic Rate-Limited Worker Pool](#dynamic-rate-limited-worker-pool)
-- [Publish-Subscribe (Pub/Sub)](#publish-subscribe-pubsub)
-
+    - [Future](#future)
+    - [Pipeline](#pipeline)
+    - [Fan-Out/Fan-In](#fan-outfan-in)
+    - [Worker Pool](#worker-pool)
+    - [Dynamic Rate-Limited Worker Pool](#dynamic-rate-limited-worker-pool)
+    - [Publish-Subscribe (Pub/Sub)](#publish-subscribe-pubsub)
 4. [Comparison Table](#comparison-table)
 
 ---
@@ -24,10 +22,13 @@ responses, and process data efficiently.
 Concurrency allows programs to execute multiple operations
 simultaneously, leading to:
 
-- **Improved Performance**: Efficiently utilizes multi-core processors by parallelizing tasks.
-- **Responsiveness**: Keeps applications reactive, enhancing user experience during long-running
-  operations.
-- **Scalability**: Handles growing workloads without a proportional increase in resource consumption.
+- **Improved Performance**:
+    - Efficiently utilizes multi-core processors by parallelizing tasks.
+- **Responsiveness**:
+    - Keeps applications reactive, enhancing user experience during long-running
+      operations.
+- **Scalability**:
+    - Handles growing workloads without a proportional increase in resource consumption.
 
 ---
 
@@ -35,60 +36,78 @@ simultaneously, leading to:
 
 ### 1. Reducing Latency in Fetching Data from Multiple APIs
 
-- **Problem**: Your application needs to aggregate data from several internal or external APIs, such as
-  fetching user details, recent activities, and recommendations.  
-  Doing this sequentially increases latency, leading to a sluggish user experience.
-- **Example**: A social media app retrieving user profiles, friend lists, and recent posts when a user
-  logs in.
-- **Solution**: Implement the **[Future](#future)** pattern to execute API calls concurrently,
-  significantly reducing total wait time and improving responsiveness.
+- **Problem**:
+    - Your application needs to aggregate data from several internal or external APIs, such as
+      fetching user details, recent activities, and recommendations.  
+      Doing this sequentially increases latency, leading to a sluggish user experience.
+- **Example**:
+    - A social media app retrieving user profiles, friend lists, and recent posts when a user
+      logs in.
+- **Solution**:
+    - Implement the **[Future](#future)** pattern to execute API calls concurrently,
+      significantly reducing total wait time and improving responsiveness.
 
 ### 2. Efficiently Processing Data Through Multiple Stages
 
-- **Problem**: Your application processes data that must go through several transformations, such as
-  parsing, validation, and storage.  
-  Doing this sequentially can become a bottleneck.
-- **Example**: A file processing application that ingests uploaded CSV files, parses them, validates the
-  data, and stores it in a database.
-- **Solution**: Use a **[Pipeline](#pipeline)** to process data concurrently at each stage, enhancing
-  throughput and allowing for efficient data handling within a single application.
+- **Problem**:
+    - Your application processes data that must go through several transformations, such as
+      parsing, validation, and storage.  
+      Doing this sequentially can become a bottleneck.
+- **Example**:
+    - A file processing application that ingests uploaded CSV files, parses them, validates the
+      data, and stores it in a database.
+- **Solution**:
+    - Use a **[Pipeline](#pipeline)** to process data concurrently at each stage, enhancing
+      throughput and allowing for efficient data handling within a single application.
 
 ### 3. Accelerating Batch Processing of Independent Tasks
 
-- **Problem**: Your application needs to process a large number of independent tasks, like resizing images
-  or computing analytics, which can be time-consuming when done one after another.
-- **Example**: A photo editing app that applies filters to a batch of images uploaded by the user.
-- **Solution**: Apply the **[Fan-Out/Fan-In](#fan-outfan-in)** pattern to distribute tasks across multiple
-  goroutines within your application and aggregate results efficiently, drastically reducing processing
-  time.
+- **Problem**:
+    - Your application needs to process a large number of independent tasks, like resizing images
+      or computing analytics, which can be time-consuming when done one after another.
+- **Example**:
+    - A photo editing app that applies filters to a batch of images uploaded by the user.
+- **Solution**:
+    - Apply the **[Fan-Out/Fan-In](#fan-outfan-in)** pattern to distribute tasks across multiple
+      goroutines within your application and aggregate results efficiently, drastically reducing processing
+      time.
 
 ### 4. Managing High Volumes of Unpredictable Tasks Without Overloading Resources
 
-- **Problem**: Your application experiences unpredictable spikes in user requests or tasks, risking system
-  overload if all tasks are processed simultaneously.
-- **Example**: A chat application handling message sending and receiving during peak usage times.
-- **Solution**: Employ a **[Worker Pool](#worker-pool)** within your application to control concurrency
-  levels, distribute workloads evenly, and maintain system stability even under high load.
+- **Problem**:
+    - Your application experiences unpredictable spikes in user requests or tasks, risking system
+      overload if all tasks are processed simultaneously.
+- **Example**:
+    - A chat application handling message sending and receiving during peak usage times.
+- **Solution**:
+    - Employ a **[Worker Pool](#worker-pool)** within your application to control concurrency
+      levels, distribute workloads evenly, and maintain system stability even under high load.
 
 ### 5. Complying with External Rate Limits While Maximizing Task Throughput
 
-- **Problem**: Your application interacts with external services that impose rate limits.  
-  Exceeding these can lead to errors or service denial.
-- **Example**: An app that retrieves stock prices from a third-party API that allows only a certain number
-  of requests per minute.
-- **Solution**: Utilize a **[Dynamic Rate-Limited Worker Pool](#dynamic-rate-limited-worker-pool)** to
-  adjust processing rates dynamically within your application, ensuring compliance with rate limits while
-  maximizing throughput.
+- **Problem**:
+    - Your application interacts with external services that impose rate limits.  
+      Exceeding these can lead to errors or service denial.
+- **Example**:
+    - An app that retrieves stock prices from a third-party API that allows only a certain number
+      of requests per minute.
+- **Solution**:
+    - Utilize a **[Dynamic Rate-Limited Worker Pool](#dynamic-rate-limited-worker-pool)** to
+      adjust processing rates dynamically within your application, ensuring compliance with rate limits while
+      maximizing throughput.
 
 ### 6. Building Scalable, Decoupled Components for Asynchronous Event Handling
 
-- **Problem**: Tight coupling within your application's modules makes it difficult to scale and maintain,
-  as changes in one part can cause unintended effects elsewhere.
-- **Example**: An online game where player actions need to update various systems like scoring,
-  achievements, and notifications without causing performance issues.
-- **Solution**: Implement the **[Publish-Subscribe (Pub/Sub)](#publish-subscribe-pubsub)** pattern within
-  your application to decouple components, allowing modules to communicate asynchronously and scale
-  independently.
+- **Problem**:
+    - Tight coupling within your application's modules makes it difficult to scale and maintain,
+      as changes in one part can cause unintended effects elsewhere.
+- **Example**:
+    - An online game where player actions need to update various systems like scoring,
+      achievements, and notifications without causing performance issues.
+- **Solution**:
+    - Implement the **[Publish-Subscribe (Pub/Sub)](#publish-subscribe-pubsub)** pattern within
+      your application to decouple components, allowing modules to communicate asynchronously and scale
+      independently.
 
 ---
 
@@ -115,9 +134,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Reduced Latency**: Executes independent tasks in parallel, minimizing total processing time.
-- **Resource Efficiency**: Allows the main thread to continue executing while waiting for results.
-- **Simplified Error Handling**: Manages asynchronous operations and their outcomes in a unified way.
+- **Reduced Latency**:
+    - Executes independent tasks in parallel, minimizing total processing time.
+- **Resource Efficiency**:
+    - Allows the main thread to continue executing while waiting for results.
+- **Simplified Error Handling**:
+    - Manages asynchronous operations and their outcomes in a unified way.
 
 **Real-Life Applications**:
 
@@ -145,9 +167,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Increased Throughput**: Each stage processes data concurrently, maximizing resource utilization.
-- **Modularity**: Separates concerns by dividing processing into distinct stages within your application.
-- **Scalability**: Easily scales by adding more workers to stages to handle increased load.
+- **Increased Throughput**:
+    - Each stage processes data concurrently, maximizing resource utilization.
+- **Modularity**:
+    - Separates concerns by dividing processing into distinct stages within your application.
+- **Scalability**:
+    - Easily scales by adding more workers to stages to handle increased load.
 
 **Real-Life Applications**:
 
@@ -171,9 +196,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Performance Boost**: Reduces total computation time by utilizing multiple cores.
-- **Efficient Aggregation**: Collects and combines results seamlessly within your application.
-- **Scalability**: Can scale by adjusting the number of worker goroutines.
+- **Performance Boost**:
+    - Reduces total computation time by utilizing multiple cores.
+- **Efficient Aggregation**:
+    - Collects and combines results seamlessly within your application.
+- **Scalability**:
+    - Can scale by adjusting the number of worker goroutines.
 
 **Real-Life Applications**:
 
@@ -197,9 +225,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Resource Management**: Prevents system overload by controlling concurrency within your application.
-- **Improved Throughput**: Keeps workers busy, optimizing resource utilization.
-- **Reliability**: Helps in graceful degradation under heavy load conditions.
+- **Resource Management**:
+    - Prevents system overload by controlling concurrency within your application.
+- **Improved Throughput**:
+    - Keeps workers busy, optimizing resource utilization.
+- **Reliability**:
+    - Helps in graceful degradation under heavy load conditions.
 
 **Real-Life Applications**:
 
@@ -223,9 +254,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Compliance**: Ensures adherence to external rate limits, avoiding errors.
-- **Adaptability**: Dynamically adjusts to changing rate limits or quotas.
-- **Efficiency**: Maximizes throughput within allowed limits.
+- **Compliance**:
+    - Ensures adherence to external rate limits, avoiding errors.
+- **Adaptability**:
+    - Dynamically adjusts to changing rate limits or quotas.
+- **Efficiency**:
+    - Maximizes throughput within allowed limits.
 
 **Real-Life Applications**:
 
@@ -249,9 +283,12 @@ efficient and maintainable.
 
 **Why Use It**:
 
-- **Loose Coupling**: Allows independent development and scaling of modules.
-- **Asynchronous Communication**: Decouples the timing between event producers and consumers.
-- **Scalability**: Easily accommodates more subscribers or publishers within the application.
+- **Loose Coupling**:
+    - Allows independent development and scaling of modules.
+- **Asynchronous Communication**:
+    - Decouples the timing between event producers and consumers.
+- **Scalability**:
+    - Easily accommodates more subscribers or publishers within the application.
 
 **Real-Life Applications**:
 
