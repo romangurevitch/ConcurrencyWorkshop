@@ -1,78 +1,185 @@
-# Understanding Fan-out, Fan-in Design Pattern in Golang
+# Understanding the Fan-Out/Fan-In Design Pattern in Go
 
-The Fan-out, Fan-in design pattern is a core concept in concurrency models which entails distributing multiple tasks
-among several goroutines (fan-out) and then combining their results into a single channel (fan-in). This pattern can
-significantly improve performance by parallelizing CPU or I/O-bound work.
+The Fan-Out/Fan-In design pattern is a fundamental concept in concurrent programming, where multiple tasks are distributed among several goroutines (**fan-out**), and their results are collected and combined into a single channel or data structure (**fan-in**). This pattern leverages Go's powerful concurrency primitives—goroutines and channels—to perform tasks in parallel, improving the performance and scalability of your applications.
+
+This guide will explain how to implement and use the Fan-Out/Fan-In pattern in Go, focusing on practical aspects, common issues, and best practices. We'll walk through a concrete implementation and demonstrate how to integrate it into your projects.
+
+---
 
 ## Table of Contents
 
-1. [Introduction to Fan-out, Fan-in](#introduction)
-2. [When to Use](#when-to-use)
-3. [Implementing Fan-out, Fan-in in Go](#implementing)
-4. [Common Pitfalls and Issues](#common-pitfalls-and-issues)
+1. [Introduction](#introduction)
+2. [Implementation Example](#implementation-example)
+3. [How to Use the Fan-Out/Fan-In Implementation](#how-to-use-the-fan-outfan-in-implementation)
+4. [Common Issues and Pitfalls](#common-issues-and-pitfalls)
 5. [Best Practices](#best-practices)
 6. [Resources](#resources)
 
+---
+
 ## Introduction
 
-In a Fan-out phase, multiple goroutines read from the same channel until the channel is closed. This phase is best
-suited for distributing work that does not need to be executed sequentially.
+In Go, the Fan-Out/Fan-In pattern leverages goroutines and channels to perform concurrent operations efficiently. The **fan-out** phase involves spawning multiple goroutines to perform tasks in parallel, while the **fan-in** phase involves collecting the results from these goroutines back into a single channel or aggregated result.
 
-In a Fan-in phase, multiple channels consolidate their results into a single channel which can be read from to get the
-aggregated result.
+![Fan-Out/Fan-In Diagram](../../../docs/images/fanout_in_graph.png)
 
-![img.png](../../../docs/images/fanout_in_graph.png)
+This pattern is particularly beneficial when dealing with:
 
-## When to Use
+- **I/O-bound operations**: Such as making multiple network requests simultaneously.
+- **CPU-bound computations**: Tasks that can be parallelized to utilize multiple CPU cores.
+- **Data processing pipelines**: Where data needs to be processed in parallel steps.
 
-- **I/O Bound Scenarios**:
-    - Fan-out, Fan-in can be beneficial in scenarios where there are I/O-bound tasks that can be performed concurrently.
+---
 
-- **CPU Bound Scenarios**:
-    - Similarly, in CPU-bound tasks, this pattern can also leverage multicore processors by distributing computation
-      across multiple goroutines.
+## Implementation Example
 
-- **Finite Tasks**:
-    - It's better suited for a finite set of tasks as an infinite input stream could potentially create an unmanageable
-      number of goroutines.
+See [main.go](main.go)
 
-## When Not to Use
+To implement the Fan-Out/Fan-In pattern, you can create a function that spawns a goroutine for each job and collects the results via a channel. The provided implementation uses generics to allow flexibility with different data types.
 
-- **Simple or Sequential Tasks**:
-    - If the tasks are simple or must be processed sequentially, the overhead of managing goroutines and channels may
-      outweigh the benefits of parallelization.
+**Key Components:**
 
-- **Infinite Input Stream**:
-    - For an unbounded or infinite input stream, the fan-out phase could potentially spawn a large number of goroutines
-      leading to resource exhaustion.
+- **`Job[T any]`**: A generic type that holds the job ID and the value to process.
+- **`Result[T any, U any]`**: A generic type that holds the job, the result value, and any error that occurred during processing.
+- **`ProcessFunc[T any, U any]`**: A function type that defines how to process a job's value.
+- **`FanOut`**: The function that fans out the jobs to goroutines and fans in the results.
 
-- **Highly Coupled Tasks**:
-    - If tasks have dependencies on each other or need to share state, the complexity of managing these dependencies
-      might make the Fan-out, Fan-in pattern less suitable.
+---
 
-- **Latency Sensitive Scenarios**:
-    - The fan-out, fan-in pattern could introduce additional latencies due to goroutine and channel management, which
-      might not be acceptable in latency-sensitive applications.
+## How to Use the Fan-Out/Fan-In Implementation
 
-## Common Pitfalls and Issues
+### Step 1: Define the Process Function
 
-- **Uncontrolled Goroutine Creation**:
-    - In the fan-out phase, creating an uncontrolled number of goroutines could lead to resource exhaustion.
+Create a function that matches the `ProcessFunc[T, U]` signature. This function performs the processing task.
 
-- **Deadlocks**:
-    - Ensure proper synchronization to avoid deadlocks, especially during the fan-in phase.
+```go
+func processData(ctx context.Context, value T) (U, error) {
+    // Perform processing on value.
+    // Return the result and any errors.
+}
+```
+
+For example, you might have a function that squares a non-negative integer:
+
+```go
+func squareNonNegative(ctx context.Context, value int) (int, error) {
+    if value < 0 {
+        return 0, errors.New("negative value")
+    }
+    return value * value, nil
+}
+```
+
+### Step 2: Prepare the Jobs
+
+Create a slice of `Job[T]` that you want to process.
+
+```go
+var jobs []Job[int]
+for i := 1; i <= numOfJobs; i++ {
+    jobs = append(jobs, Job[int]{ID: i, Value: i})
+}
+```
+
+### Step 3: Fan-Out the Jobs
+
+Call the `FanOut` function with the context, jobs, and process function.
+
+```go
+ctx, cancel := context.WithCancel(context.Background())
+defer cancel()
+
+results := FanOut(ctx, jobs, processData)
+```
+
+### Step 4: Fan-In the Results
+
+Iterate over the results channel to collect and handle the results.
+
+```go
+for result := range results {
+    if result.Err != nil {
+        // Handle error.
+        continue
+    }
+    // Use result.Value.
+}
+```
+
+For example:
+
+```go
+for result := range results {
+    if result.Err != nil {
+        log.Printf("Error processing job %d: %v", result.Job.ID, result.Err)
+        continue
+    }
+    log.Printf("Result for job %d: %v", result.Job.ID, result.Value)
+}
+```
+
+---
+## Common Issues and Pitfalls
+
+### 1. Context Cancellation Not Respected
+
+**Issue**: Goroutines may continue running even after cancellation, wasting resources and potentially causing inconsistent state.
+
+**Solution**: Ensure that your `ProcessFunc` and any loops within it check `ctx.Done()` and return promptly when the context is canceled.
+
+### 2. Resource Leaks
+
+**Issue**: Failing to release resources like open files or network connections can lead to resource exhaustion.
+
+**Solution**: Use `defer` statements to release resources and handle all error cases where resources might not be automatically released.
+
+### 3. Ignoring Errors
+
+**Issue**: Not handling errors returned by the processing function can lead to incorrect program behavior.
+
+**Solution**: Always check `result.Err` and handle errors appropriately in the fan-in phase.
+
+### 4. Race Conditions
+
+**Issue**: Concurrent access to shared variables without proper synchronization can cause race conditions.
+
+**Solution**: Avoid shared mutable state. If necessary, use synchronization primitives like mutexes to protect shared data.
+
+---
 
 ## Best Practices
 
-- **Control Goroutine Creation**:
-    - Control the number of goroutines created during the fan-out phase to avoid overwhelming the system resources.
+### 1. Proper Synchronization
 
-- **Proper Synchronization**:
-    - Ensure all goroutines finish executing and all channels are properly closed to prevent deadlocks and ensure all
-      results are collected.
+- **WaitGroups**: Use `sync.WaitGroup` to ensure all goroutines finish executing before closing channels or exiting the program.
 
-- **Error Handling**:
-    - Implement proper error handling to manage errors that may occur during the processing of tasks.
+- **Channel Management**: Ensure channels are properly closed to prevent deadlocks.
+
+### 2. Handle Context Cancellation
+
+- **Pass Contexts**: Pass `context.Context` to your `ProcessFunc` to handle cancellation and timeouts.
+
+- **Respect Context**: Ensure that your goroutines check the context and exit promptly when canceled.
+
+### 3. Error Handling
+
+- **Check Errors**: Always check for errors in the results and handle them appropriately.
+
+- **Graceful Degradation**: Decide whether to continue processing or cancel based on the error.
+
+### 4. Avoid Shared State
+
+- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid the need for synchronization.
+
+- **Synchronization Primitives**: If shared state is necessary, protect it with synchronization primitives like mutexes.
+
+### 5. Choose Appropriate Patterns for Concurrency Control
+
+- **Fixed Number of Jobs**: Since this pattern is designed for a predefined number of jobs, it's acceptable to start a goroutine for each job.
+
+- **Limiting Concurrency**: If you need to limit concurrency (e.g., when dealing with a large or unknown number of jobs), consider using a different pattern like a **Worker Pool** or **Dynamic Rate-Limited Worker Pool**.
+
+---
 
 ## Resources
 
