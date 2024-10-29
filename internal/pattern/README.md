@@ -150,6 +150,7 @@ efficient and maintainable.
 **Code Example**:
 
 [Further details and code example](future/README.md)
+
 ---
 
 ### Pipeline
@@ -180,6 +181,8 @@ efficient and maintainable.
 - Handling incoming network packets through parsing, filtering, and routing.
 - Transforming and analyzing data streams within the application.
 
+[Further details and code example](pipeline/README.md)
+
 ---
 
 ### Fan-Out/Fan-In
@@ -208,6 +211,8 @@ efficient and maintainable.
 - Processing a batch of user requests simultaneously.
 - Running multiple simulations or calculations concurrently.
 - Generating reports based on different data segments at the same time.
+
+[Further details and code example](fanoutin/README.md)
 
 ---
 
@@ -238,6 +243,8 @@ efficient and maintainable.
 - Processing tasks from a job queue in a background service.
 - Managing database queries to avoid connection pool exhaustion.
 
+[Further details and code example](workerpool/README.md)
+
 ---
 
 ### Dynamic Rate-Limited Worker Pool
@@ -267,6 +274,8 @@ efficient and maintainable.
 - Sending emails or notifications where providers limit the sending rate.
 - Scraping websites that throttle based on request frequency.
 
+[Further details and code example](dynamic/README.md)
+
 ---
 
 ### Publish-Subscribe (Pub/Sub)
@@ -295,6 +304,8 @@ efficient and maintainable.
 - An event system where user actions trigger updates in various modules.
 - Notification systems within the app that inform different components of state changes.
 - Logging and monitoring components reacting to events within the application.
+
+[Further details and code example](pubsub/README.md)
 
 ---
 
