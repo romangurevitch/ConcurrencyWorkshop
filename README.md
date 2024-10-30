@@ -12,9 +12,9 @@ effective concurrent programming in Go.
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
-2. [Getting Started](#getting-started)
-3. [Concurrency Fundamentals](#concurrency-fundamentals)
-4. [Concurrency Pitfalls](#concurrency-pitfalls)
+2. [Getting Started](#Getting-Started)
+3. [Concurrency Building Blocks in Go](#Concurrency-Building-Blocks-in-Go)
+4. [Working with Goroutines](#Working-with-Goroutines)
 5. [Common Concurrent Design Patterns](#common-concurrent-design-patterns)
 6. [Challenges](#challenges)
 
@@ -66,20 +66,20 @@ Basic experience with command-line tools is required.
 
 Dive into the building blocks of concurrency in Go by exploring the following topics:
 
-- [Channels](internal/concurrency/channel/README.md)
-- [Context](internal/concurrency/context/README.md)
-- [ErrorGroup](internal/concurrency/errgroup/README.md)
-- [Runtime (dir)](internal/concurrency/runtime)
-    - [Gosched](internal/concurrency/runtime/gosched/README.md)
-    - [Goexit](internal/concurrency/runtime/goexit/README.md)
-- [Sync (dir)](internal/concurrency/sync)
-    - [atomic](internal/concurrency/sync/atomic/README.md)
-    - [locks](internal/concurrency/sync/locks/README.md)
-    - [map](internal/concurrency/sync/map/README.md)
-    - [once](internal/concurrency/sync/once/README.md)
-    - [pool](internal/concurrency/sync/pool/README.md)
+- [Channels](internal/buildingblocks/channel/README.md)
+- [Context](internal/buildingblocks/context/README.md)
+- [ErrorGroup](internal/buildingblocks/errgroup/README.md)
+- [Runtime (dir)](internal/buildingblocks/runtime)
+    - [Gosched](internal/buildingblocks/runtime/gosched/README.md)
+    - [Goexit](internal/buildingblocks/runtime/goexit/README.md)
+- [Sync (dir)](internal/buildingblocks/sync)
+    - [atomic](internal/buildingblocks/sync/atomic/README.md)
+    - [locks](internal/buildingblocks/sync/locks/README.md)
+    - [map](internal/buildingblocks/sync/map/README.md)
+    - [once](internal/buildingblocks/sync/once/README.md)
+    - [pool](internal/buildingblocks/sync/pool/README.md)
 
-Navigate to the respective [directories](internal/concurrency) to find READMEs and code examples.
+Navigate to the respective [directories](internal/buildingblocks) to find READMEs and code examples.
 
 ## Working with Goroutines
 

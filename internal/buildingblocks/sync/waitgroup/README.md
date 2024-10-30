@@ -107,8 +107,9 @@ func main() {
 
 - **Separation of Concerns**:
     - Keep the concurrency control (`Add` and `Done`) close together and separate from the business logic of the
-      goroutine. Do not pass the `WaitGroup` forward to other functions or goroutines. This makes the code easier to
-      understand and maintain.
+      goroutine.  
+      Do not pass the `WaitGroup` forward to other functions or goroutines.  
+      This makes the code easier to understand and maintain.
 
     ```go
     // Correct

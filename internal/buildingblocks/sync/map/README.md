@@ -34,7 +34,9 @@ func main() {
 The Map type is optimized for two common use cases
 
 - When the entry for a given key is only ever written once but read many times, as in caches that only grow.
-- when multiple goroutines read, write, and overwrite entries for disjoint sets of keys. In these two cases, use of a Map may significantly reduce lock contention compared to a Go map paired with a separate Mutex or RWMutex.
+- when multiple goroutines read, write, and overwrite entries for disjoint sets of keys. 
+ 
+In these two cases, use of a Map may significantly reduce lock contention compared to a Go map paired with a separate Mutex or RWMutex.
 
 ## Common Pitfalls
 

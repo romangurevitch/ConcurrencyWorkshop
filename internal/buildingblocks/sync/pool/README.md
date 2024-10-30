@@ -2,10 +2,7 @@
 
 The `sync` package in Go provides the `Pool` type, facilitating the reuse of objects to enhance performance and reduce GC pressure.
 
-
 <img src="../../../../docs/images/gopher_pool.png" alt="drawing" height="400"/>
-
-
 
 ## Table of Contents
 
@@ -18,7 +15,8 @@ The `sync` package in Go provides the `Pool` type, facilitating the reuse of obj
 
 ## Introduction to Pool
 
-The `sync.Pool` type allows for the reuse of objects, which can help to save allocations and reduce GC pressure, especially in performance-critical applications.
+The `sync.Pool` type allows for the reuse of objects, which can help to save allocations and reduce GC pressure,
+especially in performance-critical applications.
 
 ## Usage of Pool
 
@@ -38,13 +36,22 @@ func main() {
 
 ## Use Cases
 
-- **Buffer Pooling**: Reusing byte buffers for encoding/decoding operations, or to accumulate data before writing it to disk or sending over the network.
-- **Object Pooling**: In scenarios with high allocation rates, reusing objects can significantly improve performance and reduce GC pressure.
+- **Buffer Pooling**:
+    - Reusing byte buffers for encoding/decoding operations, or to accumulate data before writing it to disk or sending
+      over the network.
+- **Object Pooling**:
+    - In scenarios with high allocation rates, reusing objects can significantly improve performance and reduce GC
+      pressure.
 
 ## Common Pitfalls
 
-- **Persistence Misconception**: Objects in a sync.Pool do not persist across garbage collection cycles. If not re-used quickly, pooled objects may be collected, leading to a lack of understanding regarding the pool's behavior.
-- **Complex Object Lifecycles**: sync.Pool works best with simple object lifecycles. Complex lifecycles can lead to bugs or unexpected behavior.
+- **Persistence Misconception**:
+    - Objects in a sync.Pool do not persist across garbage collection cycles.  
+      If not re-used quickly, pooled objects may be collected, leading to a lack of understanding regarding the pool's
+      behavior.
+- **Complex Object Lifecycles**:
+    - sync.Pool works best with simple object lifecycles.  
+      Complex lifecycles can lead to bugs or unexpected behavior.
 
 ## Best Practices
 

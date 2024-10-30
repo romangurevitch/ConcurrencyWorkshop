@@ -1,8 +1,13 @@
 # Understanding Signals in Golang
 
-In computing, a signal is a software interrupt delivered to a process. The operating system uses signals to report exceptional situations to an executing program. Some signals report errors such as references to non-existent memory. Others report asynchronous events, such as disconnection of a terminal line.
+In computing, a signal is a software interrupt delivered to a process.  
+The operating system uses signals to report exceptional situations to an executing program.  
+Some signals report errors such as references to non-existent memory.  
+Others report asynchronous events, such as disconnection of a terminal line.
 
-In Go, the `os/signal` package provides a mechanism to receive signals. This can be used to catch and respond to conditions like a user wanting to interrupt a running program (using `Ctrl+C`, for instance).
+In Go, the `os/signal` package provides a mechanism to receive signals.  
+This can be used to catch and respond to conditions like a user wanting to interrupt a running program (using `Ctrl+C`,
+for instance).
 
 <img src="https://miro.medium.com/v2/resize:fit:1400/format:webp/1*WRUe5p-pzLyCpU6hLvNVUg.png" alt="drawing" height="300"/>
 
@@ -16,7 +21,8 @@ In Go, the `os/signal` package provides a mechanism to receive signals. This can
 
 ## Introduction
 
-Signals are used in systems programming to notify running processes of certain events. For instance, the `SIGINT` signal is sent when the user presses `Ctrl+C` in the terminal, and `SIGTERM` is sent to gracefully shut down a process.
+Signals are used in systems programming to notify running processes of certain events.  
+For instance, the `SIGINT` signal is sent when the user presses `Ctrl+C` in the terminal, and `SIGTERM` is sent to gracefully shut down a process.
 
 ## Handling Signals in Go
 
@@ -45,12 +51,16 @@ func main() {
 }
 ```
 
-In this example, we first create a channel `sigs` to receive signals. We then call `signal.Notify`, registering `sigs` to receive `SIGINT` and `SIGTERM` signals. Finally, we wait for a signal by reading from `sigs`.
+In this example, we first create a channel `sigs` to receive signals.  
+We then call `signal.Notify`, registering `sigs` to receive `SIGINT` and `SIGTERM` signals.  
+Finally, we wait for a signal by reading from `sigs`.
 
-You can send a signal to a running process from the terminal. For instance, to send `SIGINT` to a process, you can use `Ctrl+C`. To send a `SIGTERM` signal, you can use the `kill` command followed by the process ID:
+You can send a signal to a running process from the terminal.  
+For instance, to send `SIGINT` to a process, you can use `Ctrl+C`.  
+To send a `SIGTERM` signal, you can use the `kill` command followed by the process ID:
 
 ```bash
-kill -TERM <pid>
+    kill -TERM <pid>
 ```
 
 ## Common Pitfalls and Issues

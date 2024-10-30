@@ -1,7 +1,7 @@
 # Understanding Golang Channels
 
-Golang channels are a powerful feature for goroutine communication. They provide a way for goroutines to synchronize and
-pass data.
+Golang channels are a powerful feature for goroutine communication.  
+They provide a way for goroutines to synchronize and pass data.
 
 <img src="https://ucarecdn.com/27841b05-0ecb-4a22-a0c3-1047e9ef0a2f/-/resize/700/" alt="drawing" height="400"/>
 
@@ -105,27 +105,30 @@ close(ch) // Panic: close of nil channel
 ```
 
 - **Accessing Channels After Panic**:
-    - If a panic occurs when sending or receiving on a channel, it's crucial to handle the panic appropriately;
+    - If a panic occurs when sending or receiving on a channel, it's crucial to handle the panic appropriately;  
       otherwise, subsequent operations on the channel may have undefined behavior.
 
 ## Best Practices
 
 - **Channel Ownership**:
     - It's strongly recommended that the producer of a channel should have ownership and be responsible for closing the
-      channel. This practice helps prevent panics from multiple attempts to close a channel.
+      channel.  
+      This practice helps prevent panics from multiple attempts to close a channel.
 - **Comma-Ok Idiom**:
-    - Always use the comma-ok idiom when receiving from channels to check if the channel is closed. The comma-ok idiom
-      helps in safely checking the state of the channel and prevents potential issues that could arise from reading from
-      closed channels.
+    - Always use the comma-ok idiom when receiving from channels to check if the channel is closed.  
+      The comma-ok idiom helps in safely checking the state of the channel and prevents potential issues that could
+      arise from reading from closed channels.
 - **Use Context for Cancellation Signals**:
-    - Instead of closing channels to signal cancellation, it's advisable to use the `context` package. The `context`
-      package provides a standardized mechanism for cancellation signals, deadlines, and passing request-scoped data.
+    - Instead of closing channels to signal cancellation, it's advisable to use the `context` package.  
+      The `context` package provides a standardized mechanism for cancellation signals, deadlines, and passing
+      request-scoped data.  
       This makes your code more idiomatic and easier to work with, especially in larger codebases or libraries.
 - **Optimize Large Data Transfers**:
     - Sending large objects or structs on a channel can cause performance issues as data is sent by value, which
-      involves copying the data. This can increase memory usage and slow down the program, especially in high-throughput
-      or low-latency systems. To mitigate this, consider (**carefully**) sending pointers to data instead of the data
-      itself. This way, only the pointer is copied, which is much more efficient.
+      involves copying the data.  
+      This can increase memory usage and slow down the program, especially in high-throughput or low-latency systems.  
+      To mitigate this, consider (**carefully**) sending pointers to data instead of the data itself.  
+      This way, only the pointer is copied, which is much more efficient.
 
 ## Resources
 
