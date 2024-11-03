@@ -15,7 +15,7 @@ import (
 func TestNilChannel(t *testing.T) {
 	test.ExitAfter(time.Millisecond)
 
-	var ch chan int
+	ch := make(chan int)
 
 	go func() {
 		ch <- 1
