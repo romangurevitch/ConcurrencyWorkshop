@@ -19,29 +19,24 @@ jobs:
         with:
           clean: true
 
-      - name: Clean workspace
-        run: |
-          sudo rm -rf ~/go/pkg/mod
-          sudo rm -rf ~/.cache/go-build
-
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version: 'stable'
 
-      - name: Cache Go Modules
-        id: cache-modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: Load Cached Go modules
-        run: go mod download
+#      - name: Cache Go Modules
+#        id: cache-modules
+#        uses: actions/cache@v4
+#        with:
+#          path: |
+#            ~/.cache/go-build
+#            ~/go/pkg/mod
+#          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+#          restore-keys: |
+#            ${{ runner.os }}-go-
+#
+#      - name: Load Cached Go modules
+#        run: go mod download
 
       - name: Run Tests
         run: make test
