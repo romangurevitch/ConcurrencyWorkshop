@@ -53,6 +53,11 @@ jobs:
         with:
           clean: true
 
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ~/go/pkg/mod
+          sudo rm -rf ~/.cache/go-build
+
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
