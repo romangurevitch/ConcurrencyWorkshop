@@ -24,20 +24,6 @@ jobs:
         with:
           go-version: 'stable'
 
-#      - name: Cache Go Modules
-#        id: cache-modules
-#        uses: actions/cache@v4
-#        with:
-#          path: |
-#            ~/.cache/go-build
-#            ~/go/pkg/mod
-#          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-#          restore-keys: |
-#            ${{ runner.os }}-go-
-#
-#      - name: Load Cached Go modules
-#        run: go mod download
-
       - name: Run Tests
         run: make test
 
@@ -46,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        level: [basic, intermediate, advanced]
+        level: [ basic, intermediate, advanced ]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -77,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        level: [basic, intermediate, advanced]
+        level: [ basic, intermediate, advanced ]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
