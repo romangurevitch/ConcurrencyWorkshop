@@ -94,7 +94,7 @@ func TestCloseClosedChannel(t *testing.T) {
 	close(ch) // Attempt to close a closed channel
 }
 
-// TestProducerConsumer demonstrates a intermediate producer-consumer pattern.go using a channel.
+// TestProducerConsumer demonstrates an intermediate producer-consumer pattern.go using a channel.
 func TestProducerConsumer(t *testing.T) {
 	ch := make(chan int) // Create a new channel
 

@@ -38,7 +38,6 @@ jobs:
         run: make test
 
   fixme-challenges:
-    if: ${{ github.ref != 'refs/heads/main' && startsWith(github.head_ref, 'fixme') }}
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -59,17 +58,49 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Check for changes in fixme-basic package
+        id: changes-basic
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/basic; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run basic fix me tests
+        if: steps.changes-basic.outputs.run == 'true'
         run: make fixme-basic
 
+      - name: Check for changes in fixme-intermediate package
+        id: changes-intermediate
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/intermediate; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run intermediate fix me tests
+        if: steps.changes-intermediate.outputs.run == 'true'
         run: make fixme-intermediate
 
+      - name: Check for changes in fixme-advanced package
+        id: changes-advanced
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/advanced; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run advanced fix me tests
+        if: steps.changes-advanced.outputs.run == 'true'
         run: make fixme-advanced
 
   implme-challenges:
-    if: ${{ github.ref != 'refs/heads/main' && startsWith(github.head_ref, 'implme') }}
     needs: test
     runs-on: ubuntu-latest
     steps:
@@ -90,11 +121,44 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
+      - name: Check for changes in implme-basic package
+        id: changes-basic
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/basic; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run basic implement me tests
+        if: steps.changes-basic.outputs.run == 'true'
         run: make implme-basic
 
+      - name: Check for changes in implme-intermediate package
+        id: changes-intermediate
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/intermediate; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run intermediate implement me tests
+        if: steps.changes-intermediate.outputs.run == 'true'
         run: make implme-intermediate
 
+      - name: Check for changes in implme-advanced package
+        id: changes-advanced
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/advanced; then
+            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
+          else
+            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Run advanced implement me tests
+        if: steps.changes-advanced.outputs.run == 'true'
         run: make implme-advanced

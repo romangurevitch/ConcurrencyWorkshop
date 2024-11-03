@@ -78,14 +78,12 @@ func TestContextPropagation(t *testing.T) {
 
 	// Simulate a chain of operations each passing the context to the next
 	go func(ctx context.Context) {
-		go func(ctx context.Context) {
-			// Wait for context cancellation
-			<-ctx.Done()
-		}(ctx)
+		go func() {
+			time.Sleep(time.Second) // Simulate some processing time
+			cancelFunc()            // Cancel the context
+		}()
+		<-ctx.Done()
 	}(ctx)
-
-	time.Sleep(time.Second) // Simulate some processing time
-	cancelFunc()            // Cancel the context
 
 	select {
 	case <-ctx.Done():
