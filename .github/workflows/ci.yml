@@ -62,7 +62,7 @@ jobs:
         id: changes-basic
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/fixme-basic; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/basic; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
@@ -97,7 +97,7 @@ jobs:
         id: changes-intermediate
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/fixme-intermediate; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/intermediate; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
@@ -132,7 +132,7 @@ jobs:
         id: changes-advanced
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/fixme-advanced; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/advanced; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
@@ -167,7 +167,7 @@ jobs:
         id: changes-basic
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/implme-basic; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/basic; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
@@ -202,7 +202,7 @@ jobs:
         id: changes-intermediate
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/implme-intermediate; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/intermediate; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
@@ -237,7 +237,7 @@ jobs:
         id: changes-advanced
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- path/to/implme-advanced; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/advanced; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
