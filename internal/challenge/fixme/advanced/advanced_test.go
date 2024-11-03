@@ -15,6 +15,7 @@ import (
 	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/test"
 )
 
+// nolint
 func TestWaitGroupWithoutDefer(t *testing.T) {
 	test.ExitAfter(100 * time.Millisecond)
 
@@ -80,6 +81,7 @@ func TestContextIgnoringCancellation(t *testing.T) {
 	wg.Wait()
 }
 
+// nolint
 func TestMultipleProducersCloseChannel(t *testing.T) {
 	ch := make(chan int)
 	wg := sync.WaitGroup{}

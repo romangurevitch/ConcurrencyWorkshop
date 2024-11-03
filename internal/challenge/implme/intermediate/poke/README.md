@@ -5,8 +5,8 @@
 **Intermediate Challenge**: This challenge is designed for developers who have a foundational understanding of Go's
 concurrency model and are looking to apply these concepts in a practical setting.
 
-Participants are expected to have prior experience with Go's basic features before attempting this challenge. This is an
-opportunity to apply your knowledge of goroutines and channels to improve application performance.
+Participants are expected to have prior experience with Go's basic features before attempting this challenge.  
+This is an opportunity to apply your knowledge of goroutines and channels to improve application performance.
 
 ## Overview
 
