@@ -8,7 +8,7 @@ on:
       - '**'
 
 jobs:
-  test:
+  Test_Examples:
     runs-on: ubuntu-latest
     outputs:
       cache-key: ${{ steps.cache-modules.outputs.key }}
@@ -27,8 +27,8 @@ jobs:
       - name: Run Tests
         run: make test
 
-  fixme:
-    needs: test
+  Test_Challenge_FixMe:
+    needs: Test_Examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -58,8 +58,8 @@ jobs:
         if: steps.changes.outputs.run == 'true'
         run: make fixme-${{ matrix.level }}
 
-  implme:
-    needs: test
+  Test_Challenge_ImplMe:
+    needs: Test_Examples
     runs-on: ubuntu-latest
     strategy:
       matrix:
