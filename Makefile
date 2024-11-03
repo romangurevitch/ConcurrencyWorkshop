@@ -59,17 +59,17 @@ test:
 # Test Targets for different components
 fixme-basic:
 	@echo "Running basic tests..."
-	@$(GOTEST) -v -run=^TestBasic ./internal/challenge/fixme/...
+	@$(GOTEST) -v ./internal/challenge/fixme/basic/...
 
 # Test Targets for different components
 fixme-intermediate:
 	@echo "Running intermediate tests..."
-	@$(GOTEST) -v -run=^TestIntermediate ./internal/challenge/fixme/...
+	@$(GOTEST) -v ./internal/challenge/fixme/intermediate/...
 
 # Test Targets for different components
 fixme-advanced:
 	@echo "Running advanced tests..."
-	@$(GOTEST) -v -run=^TestAdvanced ./internal/challenge/fixme/...
+	@$(GOTEST) -v ./internal/challenge/fixme/advanced/...
 
 # Test Targets for different components
 implme-basic:
