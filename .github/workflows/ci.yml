@@ -22,7 +22,9 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - uses: actions/cache@v4
+      - name: Cache Go Modules
+        id: cache-modules
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -34,12 +36,15 @@ jobs:
       - name: Load Cached Go modules
         run: go mod download
 
-      - name: Test
+      - name: Run Tests
         run: make test
 
-  fixme-basic:
+  fixme:
     needs: test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        level: [basic, intermediate, advanced]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -49,7 +54,8 @@ jobs:
         with:
           go-version: 'stable'
 
-      - uses: actions/cache@v4
+      - name: Cache Go Modules
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -58,23 +64,26 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Check for changes in fixme-basic package
-        id: changes-basic
+      - name: Check for changes in fixme-${{ matrix.level }} package
+        id: changes
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/basic; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/${{ matrix.level }}; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Run basic fix me tests
-        if: steps.changes-basic.outputs.run == 'true'
-        run: make fixme-basic
+      - name: Run fix me tests
+        if: steps.changes.outputs.run == 'true'
+        run: make fixme-${{ matrix.level }}
 
-  fixme-intermediate:
+  implme:
     needs: test
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        level: [basic, intermediate, advanced]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -84,7 +93,8 @@ jobs:
         with:
           go-version: 'stable'
 
-      - uses: actions/cache@v4
+      - name: Cache Go Modules
+        uses: actions/cache@v4
         with:
           path: |
             ~/.cache/go-build
@@ -93,156 +103,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      - name: Check for changes in fixme-intermediate package
-        id: changes-intermediate
+      - name: Check for changes in implme-${{ matrix.level }} package
+        id: changes
         run: |
           git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/intermediate; then
+          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/${{ matrix.level }}; then
             echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
           else
             echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Run intermediate fix me tests
-        if: steps.changes-intermediate.outputs.run == 'true'
-        run: make fixme-intermediate
-
-  fixme-advanced:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: Check for changes in fixme-advanced package
-        id: changes-advanced
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/fixme/advanced; then
-            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run advanced fix me tests
-        if: steps.changes-advanced.outputs.run == 'true'
-        run: make fixme-advanced
-
-  implme-basic:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: Check for changes in implme-basic package
-        id: changes-basic
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/basic; then
-            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run basic implement me tests
-        if: steps.changes-basic.outputs.run == 'true'
-        run: make implme-basic
-
-  implme-intermediate:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: Check for changes in implme-intermediate package
-        id: changes-intermediate
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/intermediate; then
-            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run intermediate implement me tests
-        if: steps.changes-intermediate.outputs.run == 'true'
-        run: make implme-intermediate
-
-  implme-advanced:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v4
-
-      - name: Set up Go
-        uses: actions/setup-go@v5
-        with:
-          go-version: 'stable'
-
-      - uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cache/go-build
-            ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-
-      - name: Check for changes in implme-advanced package
-        id: changes-advanced
-        run: |
-          git fetch origin ${{ github.base_ref }} --depth=1
-          if git diff --quiet origin/${{ github.base_ref }} -- internal/challenge/implme/advanced; then
-            echo "no changes" && echo "run=false" >> $GITHUB_OUTPUT
-          else
-            echo "changes detected" && echo "run=true" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Run advanced implement me tests
-        if: steps.changes-advanced.outputs.run == 'true'
-        run: make implme-advanced
+      - name: Run implement me tests
+        if: steps.changes.outputs.run == 'true'
+        run: make implme-${{ matrix.level }}
