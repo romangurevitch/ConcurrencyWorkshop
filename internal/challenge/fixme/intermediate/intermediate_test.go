@@ -144,6 +144,7 @@ func TestWaitGroupIncorrectAdd(t *testing.T) {
 	require.True(t, finishedSuccessfully)
 }
 
+// nolint
 func TestDefaultBusyLoop(t *testing.T) {
 	ch := make(chan int)
 
@@ -172,6 +173,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 	}
 }
 
+// nolint
 func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 	var count int32
 	wg := sync.WaitGroup{}
@@ -196,12 +198,14 @@ func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 	require.Equal(t, int32(2000), count, "Count was not updated atomically")
 }
 
+// nolint
 func TestUnorderedReadFromChannels(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		testUnorderedReadFromChannels(t)
 	}
 }
 
+// nolint
 func testUnorderedReadFromChannels(t *testing.T) {
 	ch1 := make(chan int, 1)
 	ch2 := make(chan int, 1)

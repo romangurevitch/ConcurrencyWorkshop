@@ -15,7 +15,7 @@ effective concurrent programming in Go.
 2. [Getting Started](#Getting-Started)
 3. [Concurrency Building Blocks in Go](#Concurrency-Building-Blocks-in-Go)
 4. [Working with Goroutines](#Working-with-Goroutines)
-5. [Common Concurrent Design Patterns](#common-concurrent-design-patterns)
+5. [Real-World Patterns and Applications](#real-world-patterns-and-applications)
 6. [Challenges](#challenges)
 
 ## Prerequisites
@@ -89,11 +89,11 @@ Discover Best Practices for Using Goroutines in Concurrency
 
 Navigate to the respective [directories](internal/goroutine) to find READMEs and code examples.
 
-## Common Concurrent Design Patterns
+## Real-World Patterns and Applications
 
 Explore various concurrent design patterns in Go:
 
-[Comparison table](internal/pattern/README.md)
+[Overview and Summary](internal/pattern/README.md)
 
 - [Future](internal/pattern/future/README.md)
 - [Pipeline](internal/pattern/pipeline/README.md)

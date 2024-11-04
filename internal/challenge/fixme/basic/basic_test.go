@@ -84,7 +84,7 @@ func TestContextUsingPrimitivesAsKeys(t *testing.T) {
 	}
 }
 
-// TestContextWithCancel demonstrates the use of context cancellation.
+// nolint
 func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
@@ -103,7 +103,7 @@ func TestContextWithCancel(t *testing.T) {
 	}
 }
 
-// TestContextWithTimeout demonstrates the use of context timeout.
+// nolint
 func TestContextWithTimeout(t *testing.T) {
 	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*2)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
@@ -118,7 +118,7 @@ func TestContextWithTimeout(t *testing.T) {
 	}
 }
 
-// TestContextWithDeadline demonstrates the use of context deadline.
+// nolint
 func TestContextWithDeadline(t *testing.T) {
 	deadline := time.Unix(22222222222, 0).Add(time.Second * 2)
 	ctx, cancelFunc := context.WithDeadline(context.Background(), deadline)
