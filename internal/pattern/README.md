@@ -2,10 +2,14 @@
 
 ## Table of Contents
 
-1. [Why Concurrency Matters](#why-concurrency-matters)
-2. [Real-Life Problems and Solutions Summary](#real-life-problems-and-solutions-summary)
+1. [Why Use Concurrency and Parallelism?](#why-use-concurrency-and-parallelism)
+    - [Improved Throughput and Resource Utilisation](#Improved-Throughput-and-Resource-Utilisation)
+    - [Low-Latency, Real-Time Responsiveness](#low-latency-real-time-responsiveness)
+    - [Handling Variable Workloads and Scaling Flexibility](#handling-variable-workloads-and-scaling-flexibility)
+    - [CPU-Intensive Workload Parallelization](#cpu-intensive-workload-parallelization)
+2. [Key Considerations for Selecting Concurrency Patterns](#key-considerations-for-selecting-concurrency-patterns)
 3. [Concurrent Design Patterns Examples in Go](#concurrent-design-patterns-examples-in-go)
-    - [Future](#future)
+     - [Future](#future)
     - [Pipeline](#pipeline)
     - [Fan-Out/Fan-In](#fan-outfan-in)
     - [Worker Pool](#worker-pool)
@@ -15,99 +19,54 @@
 
 ---
 
-## Why Concurrency Matters
+## **Why Use Concurrency and Parallelism?**
 
-In today's fast-paced digital environment, applications must handle increasing loads, provide real-time
-responses, and process data efficiently.  
-Concurrency allows programs to execute multiple operations
-simultaneously, leading to:
+### Improved Throughput and Resource Utilisation
 
-- **Improved Performance**:
-    - Efficiently utilizes multi-core processors by parallelizing tasks.
-- **Responsiveness**:
-    - Keeps applications reactive, enhancing user experience during long-running
-      operations.
+- Concurrency helps maximise throughput by allowing multiple tasks to be processed simultaneously, ensuring better
+  resource utilisation.
+- Examples:
+    - **Data Processing Pipelines**: Handling streams of data for ETL (Extract, Transform, Load) processes.
+    - **Web Scraping**: Collecting data from multiple sources concurrently.
+
+### Low-Latency, Real-Time Responsiveness
+
+- Concurrency is vital for applications requiring quick responses to multiple incoming events or requests, such as APIs
+  and sensor systems.
+- Examples:
+    - **Real-Time APIs**: Handling multiple requests concurrently.
+    - **Sensor Data Processing**: Reacting instantly to incoming data from sensors.
+
+### Handling Variable Workloads and Scaling Flexibility
+
+- Concurrency allows for more efficient scaling, especially when workloads are unpredictable or subject to sudden
+  spikes.
+- Examples:
+    - **Microservices Architecture**: Managing requests across a distributed system.
+    - **Background Jobs and Task Queues**: Processing asynchronous tasks concurrently.
+
+### CPU-Intensive Workload Parallelization
+
+- Parallelism is useful for dividing CPU-bound tasks across multiple cores to increase processing speed.
+- Examples:
+    - **Image Processing**: Applying transformations to images in parallel.
+    - **Machine Learning Training**: Distributing model training to multiple cores.
+
+## Key Considerations for Selecting Concurrency Patterns
+
+To choose the appropriate design pattern for concurrency or parallelism, consider the following constraints:
+
+- **Workload Size**:
+    - Is it bounded or unbounded? Knowing whether your workload has clear boundaries will determine the approach.
+- **Latency vs Throughput**:
+    - Does the use case prioritise low latency (quick response) or high throughput (large volumes)? Different patterns
+      will have different impacts on these factors.
 - **Scalability**:
-    - Handles growing workloads without a proportional increase in resource consumption.
-
----
-
-## Real-Life Problems and Solutions Summary
-
-### 1. Reducing Latency in Fetching Data from Multiple APIs
-
-- **Problem**:
-    - Your application needs to aggregate data from several internal or external APIs, such as
-      fetching user details, recent activities, and recommendations.  
-      Doing this sequentially increases latency, leading to a sluggish user experience.
-- **Example**:
-    - A social media app retrieving user profiles, friend lists, and recent posts when a user
-      logs in.
-- **Solution**:
-    - Implement the **[Future](#future)** pattern to execute API calls concurrently,
-      significantly reducing total wait time and improving responsiveness.
-
-### 2. Efficiently Processing Data Through Multiple Stages
-
-- **Problem**:
-    - Your application processes data that must go through several transformations, such as
-      parsing, validation, and storage.  
-      Doing this sequentially can become a bottleneck.
-- **Example**:
-    - A file processing application that ingests uploaded CSV files, parses them, validates the
-      data, and stores it in a database.
-- **Solution**:
-    - Use a **[Pipeline](#pipeline)** to process data concurrently at each stage, enhancing
-      throughput and allowing for efficient data handling within a single application.
-
-### 3. Accelerating Batch Processing of Independent Tasks
-
-- **Problem**:
-    - Your application needs to process a large number of independent tasks, like resizing images
-      or computing analytics, which can be time-consuming when done one after another.
-- **Example**:
-    - A photo editing app that applies filters to a batch of images uploaded by the user.
-- **Solution**:
-    - Apply the **[Fan-Out/Fan-In](#fan-outfan-in)** pattern to distribute tasks across multiple
-      goroutines within your application and aggregate results efficiently, drastically reducing processing
-      time.
-
-### 4. Managing High Volumes of Unpredictable Tasks Without Overloading Resources
-
-- **Problem**:
-    - Your application experiences unpredictable spikes in user requests or tasks, risking system
-      overload if all tasks are processed simultaneously.
-- **Example**:
-    - A chat application handling message sending and receiving during peak usage times.
-- **Solution**:
-    - Employ a **[Worker Pool](#worker-pool)** within your application to control concurrency
-      levels, distribute workloads evenly, and maintain system stability even under high load.
-
-### 5. Complying with External Rate Limits While Maximizing Task Throughput
-
-- **Problem**:
-    - Your application interacts with external services that impose rate limits.  
-      Exceeding these can lead to errors or service denial.
-- **Example**:
-    - An app that retrieves stock prices from a third-party API that allows only a certain number
-      of requests per minute.
-- **Solution**:
-    - Utilize a **[Dynamic Rate-Limited Worker Pool](#dynamic-rate-limited-worker-pool)** to
-      adjust processing rates dynamically within your application, ensuring compliance with rate limits while
-      maximizing throughput.
-
-### 6. Building Scalable, Decoupled Components for Asynchronous Event Handling
-
-- **Problem**:
-    - Tight coupling within your application's modules makes it difficult to scale and maintain,
-      as changes in one part can cause unintended effects elsewhere.
-- **Example**:
-    - An online game where player actions need to update various systems like scoring,
-      achievements, and notifications without causing performance issues.
-- **Solution**:
-    - Implement the **[Publish-Subscribe (Pub/Sub)](#publish-subscribe-pubsub)** pattern within
-      your application to decouple components, allowing modules to communicate asynchronously and scale
-      independently.
+    - How much will the workload grow? This determines if the solution should be auto-scalable or if it needs to handle
+      variable loads efficiently.
+- **Resource Constraints**:
+    - Are there limits on memory, CPU, or bandwidth? Understanding resource constraints helps to decide the number of
+      concurrent operations.
 
 ---
 
