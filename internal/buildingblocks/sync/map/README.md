@@ -30,6 +30,10 @@ func main() {
 }
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 The Map type is optimized for two common use cases
 

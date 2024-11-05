@@ -108,6 +108,10 @@ close(ch) // Panic: close of nil channel
     - If a panic occurs when sending or receiving on a channel, it's crucial to handle the panic appropriately;  
       otherwise, subsequent operations on the channel may have undefined behavior.
 
+## Examples and tests
+
+See [package](.)
+
 ## Best Practices
 
 - **Channel Ownership**:

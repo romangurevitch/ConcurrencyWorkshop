@@ -36,7 +36,7 @@ This pattern is beneficial when dealing with:
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 To implement the Dynamic Rate-Limited Worker Pool pattern, you can create a worker pool that processes jobs from a channel at a controlled rate using Go's `rate.Limiter`.  
 The provided implementation uses generics for flexibility with different data types.

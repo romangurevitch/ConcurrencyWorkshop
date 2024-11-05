@@ -24,6 +24,10 @@ execute.
 runtime.Gosched()
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 - Improving concurrency in CPU-bound programs.

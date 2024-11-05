@@ -45,6 +45,10 @@ case <-ctx.Done():  // Waiting for the context to be cancelled
 }
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 - **Request Scoping**:

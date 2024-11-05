@@ -35,7 +35,7 @@ This pattern is particularly beneficial when dealing with:
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 The implementation uses a `PubSub` struct to manage topics and their subscribers.  
 Subscribers can subscribe to topics, and publishers can publish messages to topics without knowledge of who the subscribers are.

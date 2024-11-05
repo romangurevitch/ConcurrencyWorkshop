@@ -33,6 +33,10 @@ g.Go(func() error {
 err := g.Wait()
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 - **Concurrent Error Handling**: 
