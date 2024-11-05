@@ -146,16 +146,16 @@ for result := range results {
 
 ### 4. Race Conditions
 
-**Issue**: Concurrent access to shared variables without proper synchronization can cause race conditions.
+**Issue**: Concurrent access to shared variables without proper synchronisation can cause race conditions.
 
 **Solution**: Avoid shared mutable state.  
-If necessary, use synchronization primitives like mutexes to protect shared data.
+If necessary, use synchronisation primitives like mutexes to protect shared data.
 
 ---
 
 ## Best Practices
 
-### 1. Proper Synchronization
+### 1. Proper Synchronisation
 
 - **WaitGroups**: Use `sync.WaitGroup` to ensure all goroutines finish executing before closing channels or exiting the program.
 
@@ -175,9 +175,9 @@ If necessary, use synchronization primitives like mutexes to protect shared data
 
 ### 4. Avoid Shared State
 
-- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid the need for synchronization.
+- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid the need for synchronisation.
 
-- **Synchronization Primitives**: If shared state is necessary, protect it with synchronization primitives like mutexes.
+- **Synchronisation Primitives**: If shared state is necessary, protect it with synchronisation primitives like mutexes.
 
 ### 5. Choose Appropriate Patterns for Concurrency Control
 

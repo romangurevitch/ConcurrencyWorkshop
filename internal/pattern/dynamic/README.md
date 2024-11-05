@@ -123,7 +123,7 @@ for result := range results {
 
 ### 1. Uncontrolled Rate Limiting
 
-**Issue**: Setting an inappropriate rate limit could still lead to resource exhaustion or underutilization.
+**Issue**: Setting an inappropriate rate limit could still lead to resource exhaustion or under utilisation.
 
 **Solution**: Carefully choose the rate limits based on the capacity of external systems and available resources.  
 Monitor and adjust the rate dynamically if necessary.
@@ -168,7 +168,7 @@ Monitor and adjust the rate dynamically if necessary.
 ### 4. Monitoring and Logging
 
 - **Instrumentation**: Use logging and monitoring tools to track the system's behavior and performance over time.
-- **Metrics Collection**: Collect metrics such as processing rates, error counts, and resource utilization.
+- **Metrics Collection**: Collect metrics such as processing rates, error counts, and resource utilisation.
 
 ### 5. Graceful Shutdown
 
@@ -177,8 +177,8 @@ Monitor and adjust the rate dynamically if necessary.
 
 ### 6. Avoid Shared State
 
-- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid the need for synchronization.
-- **Synchronization Primitives**: If shared state is necessary, protect it with synchronization primitives like mutexes.
+- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid the need for synchronisation.
+- **Synchronisation Primitives**: If shared state is necessary, protect it with synchronisation primitives like mutexes.
 
 ---
 

@@ -1,6 +1,6 @@
 # Understanding Go's `sync` Package: Locks
 
-The `sync` package in Go is essential for writing concurrent programs, providing synchronization primitives such as
+The `sync` package in Go is essential for writing concurrent programs, providing synchronisation primitives such as
 locks to manage access to shared resources.
 
 <img src="https://miro.medium.com/v2/1*bZHBo75FSyKre5pk2-HPmw.png" alt="drawing" height="400"/>

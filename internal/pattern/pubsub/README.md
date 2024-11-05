@@ -132,11 +132,11 @@ close(subscriberCh) // Close the channel if no longer needed
 
 ### 3. Concurrent Access to Subscribers Map
 
-**Issue**: Concurrent access to the subscribers map without proper synchronization can lead to race conditions.
+**Issue**: Concurrent access to the subscribers map without proper synchronisation can lead to race conditions.
 
 **Solution**:
 
-- **Synchronization**: Use synchronization primitives like `sync.Map` to handle concurrent access safely.
+- **Synchronisation**: Use synchronisation primitives like `sync.Map` to handle concurrent access safely.
 
 ### 4. Memory Leaks Due to Unsubscribed Channels
 

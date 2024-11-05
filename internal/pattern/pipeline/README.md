@@ -187,8 +187,8 @@ Check for errors at each stage and handle them appropriately.
 
 ### 5. Avoid Shared State
 
-- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid synchronization issues.
-- **Synchronization Primitives**: If shared state is necessary, protect it with synchronization mechanisms like mutexes.
+- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid synchronisation issues.
+- **Synchronisation Primitives**: If shared state is necessary, protect it with synchronisation mechanisms like mutexes.
 
 ---
 

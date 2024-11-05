@@ -16,7 +16,7 @@ associated error handling.
 
 ## Introduction to Group
 
-The `errgroup.Group` type provides synchronization, error propagation, and Context cancelation for groups of goroutines
+The `errgroup.Group` type provides synchronisation, error propagation, and Context cancellation for groups of goroutines
 working on sub-tasks of a common task.
 
 ## Usage of Group

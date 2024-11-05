@@ -25,7 +25,7 @@ We'll walk through a concrete implementation and demonstrate how to integrate it
 
 In Go, the Future pattern can be implemented using goroutines and channels.  
 It allows you to start a computation
-asynchronously and retrieve the result later, enabling non-blocking execution and better resource utilization.
+asynchronously and retrieve the result later, enabling non-blocking execution and better resource utilisation.
 
 <img src="../../../docs/images/future_graph.png" alt="drawing" height="300"/>
 
