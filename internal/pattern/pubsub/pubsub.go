@@ -1,13 +1,7 @@
-package main
+package pubsub
 
 import (
-	"context"
-	"log/slog"
-	"strconv"
 	"sync"
-
-	"github.com/mtslzr/pokeapi-go"
-	"github.com/mtslzr/pokeapi-go/structs"
 )
 
 type Result[T any] struct {
@@ -62,28 +56,4 @@ func (ps *PubSub[T]) Publish(topic string, message T) {
 		default: // if the channel is not ready to receive, move on to the next subscriber
 		}
 	}
-}
-
-// fetchPokemon fetches Pokémon data for a given ID.
-func fetchPokemon(_ context.Context, pokeID int) (structs.Pokemon, error) {
-	return pokeapi.Pokemon(strconv.Itoa(pokeID))
-}
-
-func main() {
-	pubSub := NewPubSub[structs.Pokemon]()
-	topicName := "pokemon"
-	subscriber1 := make(chan Result[structs.Pokemon], 1)
-	subscriber2 := make(chan Result[structs.Pokemon], 1)
-
-	pubSub.Subscribe(topicName, subscriber1)
-	pubSub.Subscribe(topicName, subscriber2)
-
-	poke, err := fetchPokemon(context.Background(), 1)
-	if err != nil {
-		slog.Error("Error fetching Pokemon", "error", err)
-	}
-	pubSub.Publish(topicName, poke)
-
-	slog.Info("Received message on subscriber 1", "topic", topicName, "pokemon name", (<-subscriber1).Value.Name)
-	slog.Info("Received message on subscriber 2", "topic", topicName, "pokemon name", (<-subscriber2).Value.Name)
 }

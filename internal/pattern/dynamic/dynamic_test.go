@@ -1,13 +1,16 @@
-package main
+package dynamic
 
 import (
 	"context"
+	"errors"
 	"testing"
 	"time"
 
 	"github.com/stretchr/testify/assert"
 	"golang.org/x/time/rate"
 )
+
+var ErrNegativeValue = errors.New("negative value")
 
 func TestNewRateLimited(t *testing.T) {
 	type args[T any, U any] struct {
@@ -98,7 +101,7 @@ func TestNewRateLimited(t *testing.T) {
 }
 
 // Example squareNonNegative function that squares non-negative integer.
-func squareNonNegative(ctx context.Context, value int) (int, error) {
+func squareNonNegative(_ context.Context, value int) (int, error) {
 	if value < 0 {
 		return 0, ErrNegativeValue
 	}
