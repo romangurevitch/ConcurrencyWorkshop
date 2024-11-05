@@ -1,6 +1,6 @@
 # Understanding Golang WaitGroup
 
-The `sync.WaitGroup` is a crucial synchronization primitive in Go, which allows a program to wait for a collection of
+The `sync.WaitGroup` is a crucial synchronisation primitive in Go, which allows a program to wait for a collection of
 goroutines to finish executing.
 
 <img src="../../../../docs/images/gopher_wait.png" alt="drawing" height="300"/>

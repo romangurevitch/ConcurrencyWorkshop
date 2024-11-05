@@ -6,7 +6,7 @@
     - [Improved Throughput and Resource Utilisation](#Improved-Throughput-and-Resource-Utilisation)
     - [Low-Latency, Real-Time Responsiveness](#low-latency-real-time-responsiveness)
     - [Handling Variable Workloads and Scaling Flexibility](#handling-variable-workloads-and-scaling-flexibility)
-    - [CPU-Intensive Workload Parallelization](#cpu-intensive-workload-parallelization)
+    - [CPU-Intensive Workload Parallelisation](#cpu-intensive-workload-parallelisation)
 2. [Key Considerations for Selecting Concurrency Patterns](#key-considerations-for-selecting-concurrency-patterns)
 3. [Concurrent Design Patterns Examples in Go](#concurrent-design-patterns-examples-in-go)
      - [Future](#future)
@@ -45,7 +45,7 @@
     - **Microservices Architecture**: Managing requests across a distributed system.
     - **Background Jobs and Task Queues**: Processing asynchronous tasks concurrently.
 
-### CPU-Intensive Workload Parallelization
+### CPU-Intensive Workload Parallelisation
 
 - Parallelism is useful for dividing CPU-bound tasks across multiple cores to increase processing speed.
 - Examples:
@@ -128,7 +128,7 @@ efficient and maintainable.
 **Why Use It**:
 
 - **Increased Throughput**:
-    - Each stage processes data concurrently, maximizing resource utilization.
+    - Each stage processes data concurrently, maximizing resource utilisation.
 - **Modularity**:
     - Separates concerns by dividing processing into distinct stages within your application.
 - **Scalability**:
@@ -192,7 +192,7 @@ efficient and maintainable.
 - **Resource Management**:
     - Prevents system overload by controlling concurrency within your application.
 - **Improved Throughput**:
-    - Keeps workers busy, optimizing resource utilization.
+    - Keeps workers busy, optimizing resource utilisation.
 - **Reliability**:
     - Helps in graceful degradation under heavy load conditions.
 
@@ -273,11 +273,11 @@ efficient and maintainable.
 This table provides a comparative overview of various concurrent design patterns in Go, highlighting
 their key attributes, typical use cases, and application examples within a single application context.
 
-| Design Pattern                   | Input Type | Process Duration | Synchronization                   | Latency                                                    | Throughput                                            | Data Flow                        | Use Case and Application Examples                                     |
+| Design Pattern                   | Input Type | Process Duration | Synchronisation                   | Latency                                                    | Throughput                                            | Data Flow                        | Use Case and Application Examples                                     |
 |----------------------------------|------------|------------------|-----------------------------------|------------------------------------------------------------|-------------------------------------------------------|----------------------------------|-----------------------------------------------------------------------|
 | Future                           | Single     | Short            | Blocking until result ready       | <span style="color:red">Potential Increased Latency</span> | Standard Throughput                                   | Request -> Computation -> Result | Async Computations, Async API Calls                                   |
 | Pipeline                         | Unbounded  | Long             | Sequential Execution              | <span style="color:red">Sequential Latency</span>          | <span style="color:red">Sequential Throughput</span>  | Stage-wise Processing            | Stream Processing, Data Transformation Pipelines                      |
-| Fan-out Fan-in                   | Bounded    | Short to Long    | Goroutine synchronization         | <span style="color:green">Reduced Latency</span>           | <span style="color:green">Increased Throughput</span> | Task -> Worker -> Aggregator     | CPU bound parallel tasks, Data Processing, Image Processing           |
+| Fan-out Fan-in                   | Bounded    | Short to Long    | Goroutine synchronisation         | <span style="color:green">Reduced Latency</span>           | <span style="color:green">Increased Throughput</span> | Task -> Worker -> Aggregator     | CPU bound parallel tasks, Data Processing, Image Processing           |
 | Worker Pool                      | Unbounded  | Short to Long    | Worker Coordination               | <span style="color:green">Reduced Latency</span>           | <span style="color:green">Increased Throughput</span> | Task -> Worker -> Result         | I/O or CPU Bound Tasks, Task Processing Systems                       |
 | Dynamic Rate-Limited Worker Pool | Unbounded  | Long             | Rate Limiter, Worker Coordination | Controlled Latency                                         | Controlled Throughput                                 | Task -> Worker -> Result         | External Rate Limits, Resource Management, API Clients, Microservices |
 | Pub-Sub                          | Unbounded  | Long             | Topic-based Subscription          | Event Delivery Latency                                     | Varied Based on Subscribers                           | Event Broadcast                  | Event Broadcasting, Event Notification Systems                        |

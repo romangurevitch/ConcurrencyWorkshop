@@ -194,13 +194,13 @@ go func() {
 
 ### 5. Graceful Shutdown
 
-- **WaitGroup Synchronization**: Use `sync.WaitGroup` to ensure all workers finish processing before closing the `results` channel.
+- **WaitGroup Synchronisation**: Use `sync.WaitGroup` to ensure all workers finish processing before closing the `results` channel.
 - **Context Cancellation**: Use context cancellation to signal workers to stop processing new jobs.
 
 ### 6. Avoid Shared State
 
-- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid synchronization issues.
-- **Synchronization Primitives**: If shared state is necessary, protect it with synchronization mechanisms like mutexes.
+- **Immutable Data**: Prefer passing data by value or using immutable data structures to avoid synchronisation issues.
+- **Synchronisation Primitives**: If shared state is necessary, protect it with synchronisation mechanisms like mutexes.
 
 ---
 

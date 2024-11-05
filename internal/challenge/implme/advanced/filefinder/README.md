@@ -39,5 +39,5 @@ implementation.
 Your [concurrent solution](concurrent.go) should:
 
 - Expedite the file search process via parallel directory searches.
-- Employ effective goroutine synchronization.
+- Employ effective goroutine synchronisation.
 - Properly manage errors and context cancellations.

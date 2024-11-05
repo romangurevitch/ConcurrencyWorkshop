@@ -1,6 +1,6 @@
 # Understanding Go's `sync/atomic` Package
 
-The `sync/atomic` package in Go provides low-level atomic memory primitives useful for implementing synchronization
+The `sync/atomic` package in Go provides low-level atomic memory primitives useful for implementing synchronisation
 algorithms.
 
 <img src="https://golangforall.com/assets/kanat.svg" alt="drawing" height="300"/>
@@ -61,7 +61,7 @@ See [package](.)
 ## Use Cases
 
 Atomic operations are used when you need to ensure that operations on memory are completed without interruption, such as
-when implementing counters, flags, and other synchronization primitives.
+when implementing counters, flags, and other synchronisation primitives.
 
 ## Common Pitfalls
 

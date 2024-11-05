@@ -1,6 +1,6 @@
 # Understanding Go's `sync` Package: Once
 
-The `sync` package in Go provides synchronization primitives to ensure safe concurrent access to shared resources.  
+The `sync` package in Go provides synchronisation primitives to ensure safe concurrent access to shared resources.  
 One of these primitives is the `Once` type, which ensures that a piece of code is executed only once.
 
 <img src="https://securego.io/img/gosec.svg" alt="drawing" height="400"/>
@@ -16,7 +16,7 @@ One of these primitives is the `Once` type, which ensures that a piece of code i
 
 ## Introduction to Once
 
-The `sync.Once` type is a type of synchronization primitive used to ensure that a particular piece of code is executed
+The `sync.Once` type is a type of synchronisation primitive used to ensure that a particular piece of code is executed
 only once, regardless of how many goroutines attempt to execute it.  
 This is useful for initializing resources that are shared across multiple goroutines.
 
@@ -56,8 +56,8 @@ See [package](.)
 
 ## Use Cases
 
-- **Lazy Initialization**:
-  - `sync.Once` is useful for lazy initialization where a resource is initialized only when it is
+- **Lazy Initialisation**:
+  - `sync.Once` is useful for lazy initialisation where a resource is initialized only when it is
     needed.
 - **Singleton Pattern**:
   - Ensuring a single instance of a struct is created in a concurrent environment.
@@ -69,15 +69,15 @@ See [package](.)
 - **Dependency Cycles**:
   - Be cautious of dependency cycles which could result in deadlocks when using `sync.Once`.
 - **Error Handling**:
-  - `sync.Once` does not provide built-in error handling, so if the initialization function can fail,
+  - `sync.Once` does not provide built-in error handling, so if the initialisation function can fail,
     you'll need to handle errors manually.
 
 ## Best Practices
 
 - **Error Handling**:
-  - Establish a robust error handling mechanism when using `sync.Once` for critical initialization.
+  - Establish a robust error handling mechanism when using `sync.Once` for critical initialisation.
 - **Idempotency**:
-  - Ensure the initialization function is idempotent if it may be called multiple times outside of
+  - Ensure the initialisation function is idempotent if it may be called multiple times outside of
     a `sync.Once` context.
 
 ## Resources

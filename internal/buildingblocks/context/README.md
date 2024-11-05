@@ -55,8 +55,8 @@ See [package](.)
     - Passing data that's scoped to a particular request through the call stack.
 - **Deadline Propagation**:
     - Ensuring that operations complete within a specified amount of time.
-- **Cancelation Propagation**:
-    - Propagating cancelation signals to free up resources when operations are no longer
+- **Cancellation Propagation**:
+    - Propagating cancellation signals to free up resources when operations are no longer
       needed.
 - **Tracing Propagation**:
     - Context is commonly used to carry tracing information across API boundaries and between

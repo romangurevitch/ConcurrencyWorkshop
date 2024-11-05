@@ -36,7 +36,7 @@ See [package](.)
 ## Common Pitfalls
 
 - Overuse can lead to performance degradation.
-- Not a substitute for proper goroutine synchronization.
+- Not a substitute for proper goroutine synchronisation.
 
 ## Best Practices
 
