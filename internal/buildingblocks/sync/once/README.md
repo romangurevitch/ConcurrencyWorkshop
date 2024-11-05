@@ -50,6 +50,10 @@ In this code:
 - The `Do` method of `once` is called with a function `initialize` as an argument.  
   The `initialize` function is executed the first time `Do` is called, but not the second time.
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 - **Lazy Initialization**:

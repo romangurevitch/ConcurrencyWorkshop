@@ -1,11 +1,22 @@
-package main
+package fanoutin
 
 import (
 	"context"
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
+
+var ErrNegativeValue = errors.New("negative value")
+
+// Example squareNonNegative function that squares non-negative integer.
+func squareNonNegative(_ context.Context, value int) (int, error) {
+	if value < 0 {
+		return 0, ErrNegativeValue
+	}
+	return value * value, nil
+}
 
 func TestFanOut(t *testing.T) {
 	type args[T any, U any] struct {

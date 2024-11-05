@@ -39,7 +39,7 @@ This pattern is especially beneficial when dealing with:
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 To implement the Future pattern, you can define a generic `Future` type that encapsulates an asynchronous computation.
 The `Future` uses a channel to deliver the result once it's available and handles context cancellation.

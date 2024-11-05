@@ -67,6 +67,10 @@ func writeResource() {
 - Multiple goroutines can hold a read lock at the same time, but only one can hold a write lock.
 - `RLock()` and `RUnlock()` are used for reading, `Lock()` and `Unlock()` are used for writing.
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 Locks are crucial when multiple goroutines need to access shared resources but not simultaneously to prevent data races

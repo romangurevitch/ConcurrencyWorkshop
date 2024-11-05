@@ -1,12 +1,7 @@
-package main
+package future
 
 import (
 	"context"
-	"log/slog"
-	"time"
-
-	"github.com/mtslzr/pokeapi-go"
-	"github.com/mtslzr/pokeapi-go/structs"
 )
 
 // Result type represents a computation result.
@@ -42,23 +37,4 @@ func NewFuture[T any](ctx context.Context, processFunc ProcessFunc[T]) *Future[T
 // Result retrieves the result of the computation.
 func (f *Future[T]) Result() Result[T] {
 	return <-f.result // This will block until the result is ready.
-}
-
-func main() {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel() // Ensure all resources are cleaned up
-
-	future := NewFuture(ctx, func(ctx context.Context) (structs.Pokemon, error) {
-		return pokeapi.Pokemon("pikachu")
-	})
-
-	// Optionally, do some other work here while waiting for the future result...
-
-	// Now wait for the result:
-	result := future.Result()
-	if result.Err != nil {
-		slog.Error("Error fetching Pokémon details", "error", result.Err)
-		return
-	}
-	slog.Info("Fetched Pokémon details", "pokemonName", result.Value.Name)
 }

@@ -15,7 +15,13 @@ func ExitAfter(duration time.Duration) {
 	}()
 }
 
-func CheckNoPanic(t *testing.T) {
+func ExpectPanic(t *testing.T) {
+	if err := recover(); err == nil {
+		t.Fatal("Expected a panic!")
+	}
+}
+
+func ExpectNoPanic(t *testing.T) {
 	if err := recover(); err != nil {
 		t.Fatal("Don’t panic and always carry a towel!", "error:", err)
 	}

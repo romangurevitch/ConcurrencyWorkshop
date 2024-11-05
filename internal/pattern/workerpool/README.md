@@ -36,7 +36,7 @@ This pattern is beneficial when dealing with:
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 The implementation uses goroutines and channels to create a pool of workers that process jobs concurrently.  
 A fixed number of worker goroutines are started, each pulling jobs from the `jobs` channel and sending results to the `results` channel.

@@ -34,6 +34,10 @@ func main() {
 }
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 - **Buffer Pooling**:

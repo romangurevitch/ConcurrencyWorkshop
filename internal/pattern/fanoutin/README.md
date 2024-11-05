@@ -36,7 +36,7 @@ This pattern is particularly beneficial when dealing with:
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 To implement the Fan-Out/Fan-In pattern, you can create a function that spawns a goroutine for each job and collects the results via a channel.  
 The provided implementation uses generics to allow flexibility with different data types.

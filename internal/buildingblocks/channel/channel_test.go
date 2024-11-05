@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"testing"
 	"time"
+
+	"github.com/romangurevitch/concurrencyworkshop/internal/challenge/test"
 )
 
 // TestBasicChannelUsage demonstrates intermediate usage of channels for communication between goroutines.
@@ -51,6 +53,24 @@ func TestCloseChannel(t *testing.T) {
 	}
 }
 
+// TestSendOnClosedChannel checks for a panic when sending to a closed channel.
+func TestSendOnClosedChannel(t *testing.T) {
+	ch := make(chan int) // Create a new channel
+	close(ch)            // Close the channel
+
+	defer test.ExpectPanic(t)
+	ch <- 42 // Attempt to send to a closed channel
+}
+
+// TestCloseClosedChannel checks for a panic when closing a closed channel.
+func TestCloseClosedChannel(t *testing.T) {
+	ch := make(chan int) // Create a new channel
+	close(ch)            // Close the channel
+
+	defer test.ExpectPanic(t)
+	close(ch) // Attempt to close a closed channel
+}
+
 // TestSelectDefault demonstrates how to use a select statement with a default case to prevent blocking.
 func TestSelectDefault(t *testing.T) {
 	ch := make(chan int) // Create a new channel
@@ -62,36 +82,6 @@ func TestSelectDefault(t *testing.T) {
 	default:
 		// Expected case
 	}
-}
-
-// TestSendOnClosedChannel checks for a panic when sending to a closed channel.
-func TestSendOnClosedChannel(t *testing.T) {
-	ch := make(chan int) // Create a new channel
-	close(ch)            // Close the channel
-
-	// Use a deferred function to recover from a panic
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("Expected a panic when sending on closed channel")
-		}
-	}()
-
-	ch <- 42 // Attempt to send to a closed channel
-}
-
-// TestCloseClosedChannel checks for a panic when closing a closed channel.
-func TestCloseClosedChannel(t *testing.T) {
-	ch := make(chan int) // Create a new channel
-	close(ch)            // Close the channel
-
-	// Use a deferred function to recover from a panic
-	defer func() {
-		if r := recover(); r == nil {
-			t.Error("Expected a panic when closing a closed channel")
-		}
-	}()
-
-	close(ch) // Attempt to close a closed channel
 }
 
 // TestProducerConsumer demonstrates an intermediate producer-consumer pattern.go using a channel.

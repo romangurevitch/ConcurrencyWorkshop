@@ -54,6 +54,10 @@ atomic.StoreInt64(&counter, 42)
 swapped := atomic.CompareAndSwapInt64(&counter, old, new)
 ```
 
+## Examples and tests
+
+See [package](.)
+
 ## Use Cases
 
 Atomic operations are used when you need to ensure that operations on memory are completed without interruption, such as

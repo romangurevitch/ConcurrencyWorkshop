@@ -40,7 +40,7 @@ However, you can extend this pattern to allow each stage to process multiple ite
 
 ## Implementation Example
 
-See [main.go](main.go)
+See [package](.)
 
 The implementation uses a generic `Pipe` function to create pipeline stages.  
 Each stage reads from an input channel, processes the data using a provided function, and sends the result to an output channel.  

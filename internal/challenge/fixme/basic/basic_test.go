@@ -47,7 +47,7 @@ func TestClosedChannelWithoutOkCheck(t *testing.T) {
 
 // nolint
 func TestClosedChannelWrite(t *testing.T) {
-	defer test.CheckNoPanic(t)
+	defer test.ExpectNoPanic(t)
 
 	ch := make(chan int, 1)
 	close(ch)
