@@ -93,8 +93,8 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
-		defer cancelFunc() // Cancel the context after a delay
-		time.Sleep(time.Second * 1)
+		time.Sleep(1 * time.Second)
+		cancelFunc() // Cancel the context after a delay
 	}()
 
 	select {
@@ -102,7 +102,8 @@ func TestContextWithCancel(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.Canceled) {
 			t.Errorf("Expected context.Canceled, got %v", err)
 		}
-	case <-time.After(time.Second * 3):
+		return
+	case <-time.After(3 * time.Second):
 		t.Error("Context cancellation took too long")
 	}
 }

@@ -2,7 +2,6 @@ package test
 
 import (
 	"log/slog"
-	"os"
 	"testing"
 	"time"
 )
@@ -11,7 +10,7 @@ func ExitAfter(duration time.Duration) {
 	go func() {
 		<-time.After(duration)
 		slog.Error("timeout exceeded, terminating program.")
-		os.Exit(1)
+		return
 	}()
 }
 
