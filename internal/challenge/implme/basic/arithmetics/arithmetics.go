@@ -1,6 +1,8 @@
 package arithmetics
 
-import "time"
+import (
+	"time"
+)
 
 func SequentialSum(inputSize int) int {
 	sum := 0
