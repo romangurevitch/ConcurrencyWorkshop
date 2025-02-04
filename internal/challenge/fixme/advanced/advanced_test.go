@@ -17,7 +17,7 @@ import (
 
 // nolint
 func TestWaitGroupWithoutDefer(t *testing.T) {
-	cancelFn := test.ExitAfter(time.Second)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
 	wg := sync.WaitGroup{}
@@ -40,7 +40,7 @@ func TestWaitGroupWithoutDefer(t *testing.T) {
 
 // nolint
 func TestErrGroupWithoutWithContext(t *testing.T) {
-	cancelFn := test.ExitAfter(time.Second)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
 	expectedErr := errors.New("error")
@@ -65,7 +65,7 @@ func TestErrGroupWithoutWithContext(t *testing.T) {
 
 // nolint
 func TestContextIgnoringCancellation(t *testing.T) {
-	cancelFn := test.ExitAfter(time.Second)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
 	_, cancel := context.WithTimeout(context.Background(), time.Millisecond)

@@ -8,8 +8,8 @@ import (
 	"time"
 )
 
-func ExitAfter(duration time.Duration) context.CancelFunc {
-	ctx, cancelFn := context.WithCancel(context.Background())
+func ExitWithCancelAfter(ctx context.Context, duration time.Duration) context.CancelFunc {
+	ctx, cancelFn := context.WithCancel(ctx)
 
 	go func() {
 		select {
