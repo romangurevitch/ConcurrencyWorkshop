@@ -43,7 +43,7 @@ func TestBasicError(t *testing.T) {
 	})
 
 	// Expecting an error from the group
-	if err := g.Wait(); err == nil {
+	if err := g.Wait(); err != nil {
 		assert.ErrorIs(t, err, errTask)
 	}
 }
@@ -59,7 +59,7 @@ func TestDirectDefinition(t *testing.T) {
 	})
 
 	// This will work, but lacks context control which could lead to goroutine leaks or lack of context propagation.
-	if err := g.Wait(); err == nil {
+	if err := g.Wait(); err != nil {
 		assert.ErrorIs(t, err, errTask)
 	}
 }

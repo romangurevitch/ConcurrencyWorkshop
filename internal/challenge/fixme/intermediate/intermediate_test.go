@@ -23,7 +23,9 @@ import (
 // This test includes a task that fails immediately and a task that runs indefinitely. The errgroup is expected
 // to return an error due to the failing task.
 func TestErrGroupUsage(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	cancelFn := test.ExitAfter(time.Second)
+	defer cancelFn()
+
 	g, _ := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")
@@ -80,7 +82,8 @@ func TestWithCancelCause(t *testing.T) {
 
 // nolint
 func TestUnbufferedNotifyChannel(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitAfter(time.Second)
+	defer cancelFn()
 
 	sigCh := make(chan os.Signal)
 	signal.Notify(sigCh, syscall.SIGINT)
@@ -97,7 +100,8 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 }
 
 func TestDeadlock(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitAfter(time.Second)
+	defer cancelFn()
 
 	var mu sync.Mutex
 	mu.Lock()
@@ -116,7 +120,9 @@ func TestDeadlock(t *testing.T) {
 
 // nolint
 func TestWaitGroupByValue(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitAfter(time.Second)
+	defer cancelFn()
+
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)
