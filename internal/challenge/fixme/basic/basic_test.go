@@ -123,7 +123,7 @@ func TestContextWithTimeout(t *testing.T) {
 
 // nolint
 func TestContextWithDeadline(t *testing.T) {
-	deadline := time.Unix(22222222222, 0).Add(time.Second * 2)
+	deadline := time.Unix(time.Now().Unix(), 0).Add(time.Second * 2)
 	ctx, cancelFunc := context.WithDeadline(context.Background(), deadline)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
@@ -132,7 +132,7 @@ func TestContextWithDeadline(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(deadline.Add(time.Second * 3)):
+	case <-time.After(time.Second * 3):
 		t.Error("Context deadline took too long")
 	}
 }
