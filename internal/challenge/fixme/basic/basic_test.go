@@ -15,7 +15,7 @@ import (
 func TestNilChannel(t *testing.T) {
 	test.ExitAfter(time.Millisecond)
 
-	var ch chan int
+	ch := make(chan int)
 
 	go func() {
 		ch <- 1
@@ -37,12 +37,12 @@ func TestClosedChannelWithoutOkCheck(t *testing.T) {
 		close(ch)
 	}()
 
-	for {
-		select {
-		case val := <-ch:
-			slog.Info("received", "value", val)
+	select {
+	case val, ok := <-ch:
+		if ok {
+		slog.Info("received", "value", val)
 		}
-	}
+	} 
 }
 
 // nolint
@@ -50,13 +50,14 @@ func TestClosedChannelWrite(t *testing.T) {
 	defer test.ExpectNoPanic(t)
 
 	ch := make(chan int, 1)
-	close(ch)
+	defer close(ch)
 	ch <- 5
 }
 
 // nolint
 func TestUnlockingUnlockedLock(t *testing.T) {
 	var mu sync.Mutex
+	mu.Lock()
 	mu.Unlock()
 }
 
@@ -64,7 +65,7 @@ func TestUnlockingUnlockedLock(t *testing.T) {
 func TestWaitGroupNegativeCounter(t *testing.T) {
 	wg := sync.WaitGroup{}
 
-	wg.Add(1)
+	wg.Add(2)
 	go func() {
 		wg.Done()
 		wg.Done()
