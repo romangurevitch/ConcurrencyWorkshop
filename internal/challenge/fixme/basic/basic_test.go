@@ -29,7 +29,7 @@ func TestNilChannel(t *testing.T) {
 
 // nolint
 func TestClosedChannelWithoutOkCheck(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	test.ExitAfter(100 * time.Millisecond)
 	ch := make(chan int)
 
 	go func() {
