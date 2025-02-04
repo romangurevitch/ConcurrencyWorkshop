@@ -13,7 +13,7 @@ import (
 
 // nolint
 func TestNilChannel(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	test.ExitAfter(5 * time.Second)
 
 	ch := make(chan int)
 
@@ -29,7 +29,7 @@ func TestNilChannel(t *testing.T) {
 
 // nolint
 func TestClosedChannelWithoutOkCheck(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	test.ExitAfter(time.Second)
 	ch := make(chan int)
 
 	go func() {
@@ -92,7 +92,7 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
-		time.Sleep(80 * time.Millisecond)
+		time.Sleep(10 * time.Millisecond)
 		cancelFunc() // Cancel the context after a delay
 	}()
 
@@ -101,14 +101,14 @@ func TestContextWithCancel(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.Canceled) {
 			t.Errorf("Expected context.Canceled, got %v", err)
 		}
-	case <-time.After(100 * time.Millisecond):
+	case <-time.After(20 * time.Millisecond):
 		t.Error("Context cancellation took too long")
 	}
 }
 
 // nolint
 func TestContextWithTimeout(t *testing.T) {
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*2)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), 80*time.Millisecond)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
 	select {
@@ -116,14 +116,14 @@ func TestContextWithTimeout(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(time.Second * 3):
+	case <-time.After(100 * time.Millisecond):
 		t.Error("Context timeout took too long")
 	}
 }
 
 // nolint
 func TestContextWithDeadline(t *testing.T) {
-	deadline := time.Now().Add(time.Second * 2)
+	deadline := time.Now().Add(80 * time.Millisecond)
 	ctx, cancelFunc := context.WithDeadline(context.Background(), deadline)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 	select {
@@ -131,7 +131,7 @@ func TestContextWithDeadline(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(time.Second * 3):
+	case <-time.After(100 * time.Millisecond):
 		t.Error("Context deadline took too long")
 	}
 }
