@@ -3,7 +3,6 @@ package fixme
 import (
 	"context"
 	"errors"
-	"fmt"
 	"log/slog"
 	"sync"
 	"testing"
@@ -94,10 +93,8 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
+		defer cancelFunc() // Cancel the context after a delay
 		time.Sleep(time.Second * 1)
-		fmt.Println("Cancelling...")
-		cancelFunc() // Cancel the context after a delay
-		fmt.Println("Done")
 	}()
 
 	select {
