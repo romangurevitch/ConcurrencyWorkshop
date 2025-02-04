@@ -20,6 +20,7 @@ func TestNilChannel(t *testing.T) {
 
 	go func() {
 		ch <- 1
+		close(ch)
 	}()
 
 	for val := range ch {
@@ -94,7 +95,7 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
-		time.Sleep(time.Millisecond * 500)
+		time.Sleep(time.Millisecond)
 		cancelFunc() // Cancel the context after a delay
 	}()
 
@@ -110,7 +111,7 @@ func TestContextWithCancel(t *testing.T) {
 
 // nolint
 func TestContextWithTimeout(t *testing.T) {
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Millisecond*500)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Millisecond)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
 	select {
