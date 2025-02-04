@@ -40,9 +40,9 @@ func TestClosedChannelWithoutOkCheck(t *testing.T) {
 	select {
 	case val, ok := <-ch:
 		if ok {
-		slog.Info("received", "value", val)
+			slog.Info("received", "value", val)
 		}
-	} 
+	}
 }
 
 // nolint
@@ -99,14 +99,14 @@ func TestContextWithCancel(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.Canceled) {
 			t.Errorf("Expected context.Canceled, got %v", err)
 		}
-	case <-time.After(time.Second * 1):
+	case <-time.After(time.Second * 3):
 		t.Error("Context cancellation took too long")
 	}
 }
 
 // nolint
 func TestContextWithTimeout(t *testing.T) {
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*2)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*1)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
 	select {
@@ -114,14 +114,14 @@ func TestContextWithTimeout(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(time.Second * 1):
+	case <-time.After(time.Second * 2):
 		t.Error("Context timeout took too long")
 	}
 }
 
 // nolint
 func TestContextWithDeadline(t *testing.T) {
-	deadline := time.Unix(22222222222, 0).Add(time.Second * 2)
+	deadline := time.Unix(time.Now().Unix(), 0).Add(time.Second * 2)
 	ctx, cancelFunc := context.WithDeadline(context.Background(), deadline)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
