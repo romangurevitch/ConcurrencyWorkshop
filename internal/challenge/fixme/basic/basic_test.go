@@ -42,12 +42,8 @@ func TestClosedChannelWithoutOkCheck(t *testing.T) {
 		case val, ok := <-ch:
 			slog.Info("received", "value", val)
 			if !ok {
-				ch = nil
+				return
 			}
-		}
-
-		if ch == nil {
-			break
 		}
 	}
 }
