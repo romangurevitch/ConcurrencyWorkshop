@@ -123,7 +123,7 @@ func TestContextWithTimeout(t *testing.T) {
 
 // nolint
 func TestContextWithDeadline(t *testing.T) {
-	deadline := time.Unix(time.Now().Unix(), 0).Add(time.Second * 2)
+	deadline := time.Now().Add(time.Second * 2)
 	ctx, cancelFunc := context.WithDeadline(context.Background(), deadline)
 	defer cancelFunc() // It's a good practice to call the cancel function even if the context times out
 
