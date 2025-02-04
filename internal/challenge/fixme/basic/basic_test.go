@@ -80,12 +80,10 @@ func TestWaitGroupNegativeCounter(t *testing.T) {
 	wg.Wait()
 }
 
-// keyType is a type used for context value keys to avoid collisions.
-type keyType string
-
 // nolint
 func TestContextUsingPrimitivesAsKeys(t *testing.T) {
-	key := keyType("myKey")
+	type ctxKey string
+	key := ctxKey("myKey")
 	ctx := context.WithValue(context.Background(), key, "value1")
 
 	if val, ok := ctx.Value(key).(string); !ok || val != "value1" {
