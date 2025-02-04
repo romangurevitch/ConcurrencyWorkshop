@@ -15,7 +15,7 @@ import (
 func TestNilChannel(t *testing.T) {
 	test.ExitAfter(time.Millisecond)
 
-	var ch chan int
+	ch := make(chan int, 1)
 
 	go func() {
 		ch <- 1
@@ -39,7 +39,10 @@ func TestClosedChannelWithoutOkCheck(t *testing.T) {
 
 	for {
 		select {
-		case val := <-ch:
+		case val, ok := <-ch:
+			if !ok {
+				return
+			}
 			slog.Info("received", "value", val)
 		}
 	}
@@ -50,13 +53,14 @@ func TestClosedChannelWrite(t *testing.T) {
 	defer test.ExpectNoPanic(t)
 
 	ch := make(chan int, 1)
-	close(ch)
+	defer close(ch)
 	ch <- 5
 }
 
 // nolint
 func TestUnlockingUnlockedLock(t *testing.T) {
 	var mu sync.Mutex
+	mu.Lock()
 	mu.Unlock()
 }
 
@@ -67,7 +71,6 @@ func TestWaitGroupNegativeCounter(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		wg.Done()
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -77,7 +80,7 @@ func TestWaitGroupNegativeCounter(t *testing.T) {
 func TestContextUsingPrimitivesAsKeys(t *testing.T) {
 	type ctxKey string
 	const key ctxKey = "myKey"
-	ctx := context.WithValue(context.Background(), "myKey", "value1")
+	ctx := context.WithValue(context.Background(), key, "value1")
 
 	if val, ok := ctx.Value(key).(string); !ok || val != "value1" {
 		t.Fatalf("expected context to have 'value1' for 'myKey', got: %v", val)
@@ -89,8 +92,8 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
+		cancelFunc() // Cancel the context immediately
 		time.Sleep(time.Second * 2)
-		cancelFunc() // Cancel the context after a delay
 	}()
 
 	select {
@@ -113,7 +116,7 @@ func TestContextWithTimeout(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(time.Second * 1):
+	case <-time.After(time.Second * 4):
 		t.Error("Context timeout took too long")
 	}
 }
@@ -129,7 +132,7 @@ func TestContextWithDeadline(t *testing.T) {
 		if err := ctx.Err(); !errors.Is(err, context.DeadlineExceeded) {
 			t.Errorf("Expected context.DeadlineExceeded, got %v", err)
 		}
-	case <-time.After(time.Second * 3):
+	case <-time.After(deadline.Add(time.Second * 3)):
 		t.Error("Context deadline took too long")
 	}
 }
