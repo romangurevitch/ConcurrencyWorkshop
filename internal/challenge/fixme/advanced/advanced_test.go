@@ -17,7 +17,8 @@ import (
 
 // nolint
 func TestWaitGroupWithoutDefer(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
 
 	wg := sync.WaitGroup{}
 	finishedSuccessfully := false
@@ -39,7 +40,9 @@ func TestWaitGroupWithoutDefer(t *testing.T) {
 
 // nolint
 func TestErrGroupWithoutWithContext(t *testing.T) {
-	test.ExitAfter(10 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
+
 	expectedErr := errors.New("error")
 
 	group, ctx := errgroup.WithContext(context.Background())
@@ -62,9 +65,12 @@ func TestErrGroupWithoutWithContext(t *testing.T) {
 
 // nolint
 func TestContextIgnoringCancellation(t *testing.T) {
-	test.ExitAfter(10 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
+
 	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
-	cancel()
+	defer cancel()
+
 
 	inputCh := make(chan bool)
 
