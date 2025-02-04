@@ -83,7 +83,7 @@ func TestWaitGroupNegativeCounter(t *testing.T) {
 // nolint
 func TestContextUsingPrimitivesAsKeys(t *testing.T) {
 	type ctxKey string
-	key := ctxKey("myKey")
+	const key ctxKey = "myKey"
 	ctx := context.WithValue(context.Background(), key, "value1")
 
 	if val, ok := ctx.Value(key).(string); !ok || val != "value1" {
