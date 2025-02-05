@@ -1,17 +1,22 @@
 package test
 
 import (
+	"context"
 	"log/slog"
 	"testing"
 	"time"
 )
 
-func ExitAfter(duration time.Duration) {
+func ExitWithCancelAfter(ctx context.Context, duration time.Duration) context.CancelFunc {
+	ctx, cancelFn := context.WithCancel(ctx)
+
 	go func() {
 		<-time.After(duration)
 		slog.Error("timeout exceeded, terminating program.")
 		return
 	}()
+
+	return cancelFn
 }
 
 func ExpectPanic(t *testing.T) {
