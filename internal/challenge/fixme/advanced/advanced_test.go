@@ -30,8 +30,8 @@ func TestWaitGroupWithoutDefer(t *testing.T) {
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		finishedFunc()
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -51,12 +51,17 @@ func TestErrGroupWithoutWithContext(t *testing.T) {
 		return expectedErr
 	})
 
-	group.Go(func() error {
-		select {
-		case <-ctx.Done():
-			return ctx.Err()
+	go func() {
+		err := func() error {
+			select {
+			case <-ctx.Done():
+				return ctx.Err()
+			}
+		}()
+		if err != nil {
+			require.ErrorIs(t, err, context.Canceled)
 		}
-	})
+	}()
 
 	if err := group.Wait(); err != nil {
 		require.ErrorIs(t, err, expectedErr)
@@ -83,24 +88,28 @@ func TestContextIgnoringCancellation(t *testing.T) {
 		}
 	}()
 
+	inputCh <- true
+
 	wg.Wait()
 }
 
 // nolint
 func TestMultipleProducersCloseChannel(t *testing.T) {
-	ch := make(chan int)
+	ch := make(chan int, 2)
 	wg := sync.WaitGroup{}
 
 	producer := func() {
 		defer wg.Done()
 		ch <- 1
-		close(ch)
 	}
 
 	wg.Add(2)
 	go producer()
 	go producer()
 
+	wg.Wait()
+
+	close(ch)
 	for val := range ch {
 		slog.Info("successfully received", "value", val)
 	}
