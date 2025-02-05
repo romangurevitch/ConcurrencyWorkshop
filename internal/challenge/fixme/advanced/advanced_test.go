@@ -89,19 +89,19 @@ func TestContextIgnoringCancellation(t *testing.T) {
 
 // nolint
 func TestMultipleProducersCloseChannel(t *testing.T) {
-	ch := make(chan int)
+	ch := make(chan int, 2)
 	wg := sync.WaitGroup{}
 
 	producer := func() {
 		defer wg.Done()
 		ch <- 1
-		close(ch)
 	}
 
 	wg.Add(2)
 	go producer()
 	go producer()
-
+	wg.Wait()
+	close(ch)
 	for val := range ch {
 		slog.Info("successfully received", "value", val)
 	}
