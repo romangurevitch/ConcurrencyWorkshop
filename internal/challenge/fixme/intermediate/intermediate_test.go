@@ -81,7 +81,8 @@ func TestWithCancelCause(t *testing.T) {
 
 // nolint
 func TestUnbufferedNotifyChannel(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
 
 	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT)
@@ -98,7 +99,8 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 }
 
 func TestDeadlock(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
 
 	var mu sync.Mutex
 	mu.Lock()
@@ -118,7 +120,9 @@ func TestDeadlock(t *testing.T) {
 
 // nolint
 func TestWaitGroupByValue(t *testing.T) {
-	test.ExitAfter(100 * time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
+
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)

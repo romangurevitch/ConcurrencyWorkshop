@@ -13,7 +13,8 @@ import (
 
 // nolint
 func TestNilChannel(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
 
 	//var ch chan int
 	var ch = make(chan int)
@@ -30,7 +31,9 @@ func TestNilChannel(t *testing.T) {
 
 // nolint
 func TestClosedChannelWithoutOkCheck(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	defer cancelFn()
+
 	ch := make(chan int)
 
 	go func() {
