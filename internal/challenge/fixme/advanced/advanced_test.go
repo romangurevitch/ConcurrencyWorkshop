@@ -30,8 +30,8 @@ func TestWaitGroupWithoutDefer(t *testing.T) {
 
 	wg.Add(1)
 	go func() {
+		defer wg.Done()
 		finishedFunc()
-		wg.Done()
 	}()
 
 	wg.Wait()
@@ -45,7 +45,7 @@ func TestErrGroupWithoutWithContext(t *testing.T) {
 
 	expectedErr := errors.New("error")
 	ctx := context.Background()
-	group := errgroup.Group{}
+	group, ctx := errgroup.WithContext(ctx)
 
 	group.Go(func() error {
 		return expectedErr
@@ -68,7 +68,7 @@ func TestContextIgnoringCancellation(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	_, cancel := context.WithTimeout(context.Background(), time.Millisecond)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
 	defer cancel()
 
 	inputCh := make(chan bool)
@@ -78,6 +78,7 @@ func TestContextIgnoringCancellation(t *testing.T) {
 	go func() {
 		defer wg.Done()
 		select {
+		case <-ctx.Done():
 		// Waiting on input
 		case <-inputCh:
 		}
