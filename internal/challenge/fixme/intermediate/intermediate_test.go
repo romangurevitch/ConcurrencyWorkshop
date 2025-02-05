@@ -23,7 +23,6 @@ import (
 // This test includes a task that fails immediately and a task that runs indefinitely. The errgroup is expected
 // to return an error due to the failing task.
 func TestErrGroupUsage(t *testing.T) {
-	test.ExitAfter(time.Millisecond)
 	g, ctx := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")

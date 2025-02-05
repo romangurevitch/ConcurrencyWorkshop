@@ -66,13 +66,9 @@ func TestErrGroupWithoutWithContext(t *testing.T) {
 
 // nolint
 func TestContextIgnoringCancellation(t *testing.T) {
-	test.ExitAfter(10 * time.Millisecond)
-	ctx, cancel := context.WithTimeout(context.Background(), time.Millisecond)
-	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
+	ctx, _ := context.WithTimeout(context.Background(), time.Millisecond)
+	cancelFn := test.ExitWithCancelAfter(ctx, time.Second)
 	defer cancelFn()
-
-	_, cancel := context.WithTimeout(context.Background(), time.Millisecond)
-	defer cancel()
 
 	inputCh := make(chan bool)
 
