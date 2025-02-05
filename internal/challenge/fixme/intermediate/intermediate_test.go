@@ -97,6 +97,16 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 		if err := syscall.Kill(syscall.Getpid(), syscall.SIGINT); err != nil {
 			require.NoError(t, err, "failed to send SIGINT")
 		}
+		select {
+		case <-sigCh:
+			{
+				return
+			}
+		default:
+			{
+				// life continues
+			}
+		}
 	}()
 
 	time.Sleep(10 * time.Millisecond)
