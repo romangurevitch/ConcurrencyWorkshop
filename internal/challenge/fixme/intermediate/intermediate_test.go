@@ -164,7 +164,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 		close(ch)
 	}()
 
-	counter := 0
+	// counter := 0
 	for {
 		select {
 		case val, ok := <-ch:
@@ -173,12 +173,13 @@ func TestDefaultBusyLoop(t *testing.T) {
 			}
 			slog.Info("received", "value", val)
 
-		default: // maybe we can just remove the default?
-			time.Sleep(time.Second) // add timeout to allow to read from channel
-			counter++
-			if counter > 50 {
-				t.Fatalf("Something is wrong")
-			}
+			// Default will always be executed, we can remove this to block until we receive the value
+			// Or maybe increase the counter/add sleep (not recommended!)
+			// default:
+			// 	counter++
+			// 	if counter > 50 {
+			// 		t.Fatalf("Something is wrong")
+			// 	}
 		}
 	}
 }
