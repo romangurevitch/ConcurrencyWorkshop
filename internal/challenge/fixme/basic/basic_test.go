@@ -94,7 +94,7 @@ func TestContextWithCancel(t *testing.T) {
 	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	go func() {
-		time.Sleep(time.Second * 2)
+		time.Sleep(time.Second * 1)
 		cancelFunc() // Cancel the context after a delay
 	}()
 
