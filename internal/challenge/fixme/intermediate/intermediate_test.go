@@ -3,6 +3,7 @@ package fixme
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log/slog"
 	"os"
 	"os/signal"
@@ -37,11 +38,9 @@ func TestErrGroupUsage(t *testing.T) {
 
 	// Task that runs forever
 	g.Go(func() error {
-		for {
-			if errCtx.Err() != nil {
-				return errCtx.Err()
-			}
-			// Rest of your tasks
+		select {
+		case <-errCtx.Done():
+			return errCtx.Err()
 		}
 	})
 
@@ -53,12 +52,11 @@ func TestErrGroupUsage(t *testing.T) {
 
 // TestContextPropagation demonstrates the propagation of context cancellation through multiple layers.
 func TestContextPropagation(t *testing.T) {
-	ctx := context.Background()
+	ctx, cancelFunc := context.WithCancel(context.Background())
 
 	// Simulate a chain of operations each passing the context to the next function
 	go func(ctx context.Context) {
 		go func(ctx context.Context) {
-			_, cancelFunc := context.WithCancel(ctx)
 			defer cancelFunc()      // Cancel the context
 			time.Sleep(time.Second) // Simulate some processing time
 		}(ctx)
@@ -76,9 +74,9 @@ func TestContextPropagation(t *testing.T) {
 // TestWithCancelCause demonstrates the use of context.WithCancelCause.
 func TestWithCancelCause(t *testing.T) {
 	ourError := errors.New("we wish to see our specific cancel error")
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancelCause(context.Background())
 
-	cancel()
+	cancel(ourError)
 
 	if cause := context.Cause(ctx); !errors.Is(cause, ourError) {
 		t.Errorf("Expected '%v', got '%v'", ourError, cause)
@@ -90,7 +88,7 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	sigCh := make(chan os.Signal)
+	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT)
 
 	go func() {
@@ -168,19 +166,14 @@ func TestDefaultBusyLoop(t *testing.T) {
 		close(ch)
 	}()
 
-	counter := 0
-	for i := 0; i < 3; i++ {
+	for {
 		select {
 		case val, ok := <-ch:
 			if !ok {
 				return
 			}
+			fmt.Println(val)
 			slog.Info("received", "value", val)
-		default:
-			counter++
-			if counter > 50 {
-				t.Fatalf("Something is wrong")
-			}
 		}
 	}
 }
