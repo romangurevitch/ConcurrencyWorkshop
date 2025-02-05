@@ -89,7 +89,7 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	sigCh := make(chan os.Signal)
+	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT)
 
 	go func() {
@@ -97,7 +97,6 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 		if err := syscall.Kill(syscall.Getpid(), syscall.SIGINT); err != nil {
 			require.NoError(t, err, "failed to send SIGINT")
 		}
-		sigCh <- syscall.SIGINT
 	}()
 
 	time.Sleep(10 * time.Millisecond)
