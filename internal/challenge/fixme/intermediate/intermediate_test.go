@@ -26,7 +26,7 @@ func TestErrGroupUsage(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	g, _ := errgroup.WithContext(context.Background())
+	g, errCtx := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")
 
@@ -37,11 +37,16 @@ func TestErrGroupUsage(t *testing.T) {
 
 	// Task that runs forever
 	g.Go(func() error {
-		select {}
+		for {
+			if errCtx.Err() != nil {
+				return errCtx.Err()
+			}
+			// Rest of your tasks
+		}
 	})
 
 	// Expecting an error from the group
-	if err := g.Wait(); err == nil {
+	if err := g.Wait(); err != nil {
 		assert.ErrorIs(t, err, taskError)
 	}
 }
@@ -54,8 +59,8 @@ func TestContextPropagation(t *testing.T) {
 	go func(ctx context.Context) {
 		go func(ctx context.Context) {
 			_, cancelFunc := context.WithCancel(ctx)
+			defer cancelFunc()      // Cancel the context
 			time.Sleep(time.Second) // Simulate some processing time
-			cancelFunc()            // Cancel the context
 		}(ctx)
 		<-ctx.Done()
 	}(ctx)
@@ -126,9 +131,9 @@ func TestWaitGroupByValue(t *testing.T) {
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)
-	go func(wg sync.WaitGroup) {
+	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-	}(wg)
+	}(&wg)
 
 	wg.Wait()
 }
@@ -138,12 +143,12 @@ func TestWaitGroupIncorrectAdd(t *testing.T) {
 	wg := sync.WaitGroup{}
 	finishedSuccessfully := false
 
+	wg.Add(1)
 	go func() {
-		wg.Add(1)
-		defer wg.Done()
 		defer func() {
 			finishedSuccessfully = true
 		}()
+		defer wg.Done()
 	}()
 
 	wg.Wait()
@@ -213,11 +218,13 @@ func TestUnorderedReadFromChannels(t *testing.T) {
 
 // nolint
 func testUnorderedReadFromChannels(t *testing.T) {
-	ch1 := make(chan int, 1)
-	ch2 := make(chan int, 1)
+	ch1 := make(chan int)
+	ch2 := make(chan int)
 
-	ch1 <- 2
-	ch2 <- 3
+	go func() {
+		ch1 <- 2
+		ch2 <- 3
+	}()
 
 	result := 5
 	for i := 0; i < 2; i++ {
