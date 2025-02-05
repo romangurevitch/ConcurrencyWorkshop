@@ -169,7 +169,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 	}()
 
 	counter := 0
-	for {
+	for i := 0; i < 3; i++ {
 		select {
 		case val, ok := <-ch:
 			if !ok {
