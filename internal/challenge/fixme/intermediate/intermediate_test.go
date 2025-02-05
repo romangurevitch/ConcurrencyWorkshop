@@ -26,7 +26,7 @@ func TestErrGroupUsage(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	g, _ := errgroup.WithContext(context.Background())
+	g, ctx := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")
 
@@ -37,7 +37,10 @@ func TestErrGroupUsage(t *testing.T) {
 
 	// Task that runs forever
 	g.Go(func() error {
-		select {}
+		select {
+		case <-ctx.Done():
+			return nil
+		}
 	})
 
 	// Expecting an error from the group
