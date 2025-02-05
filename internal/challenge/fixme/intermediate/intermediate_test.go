@@ -40,8 +40,7 @@ func TestErrGroupUsage(t *testing.T) {
 		for {
 			select {
 			case <-ctx.Done(): // check for context cancellation
-				return nil
-			default: // do something else
+				return ctx.Err()
 			}
 		}
 	})
