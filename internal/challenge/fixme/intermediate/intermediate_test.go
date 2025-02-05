@@ -114,6 +114,7 @@ func TestDeadlock(t *testing.T) {
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {
+		mu.Unlock()
 		defer wg.Done()
 		mu.Lock()
 		defer mu.Unlock()
@@ -188,6 +189,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 	var count int32
 	wg := sync.WaitGroup{}
+	mu := sync.Mutex{}
 
 	for i := 0; i < 1000; i++ {
 		wg.Add(1)
@@ -201,7 +203,9 @@ func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
+			mu.Lock()
 			count++
+			mu.Unlock()
 		}()
 	}
 
