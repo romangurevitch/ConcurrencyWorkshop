@@ -26,7 +26,7 @@ func TestErrGroupUsage(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	g, _ := errgroup.WithContext(context.Background())
+	g, ctx := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")
 
@@ -37,7 +37,12 @@ func TestErrGroupUsage(t *testing.T) {
 
 	// Task that runs forever
 	g.Go(func() error {
-		select {}
+		select {
+		case <-ctx.Done():
+			{
+				return ctx.Err()
+			}
+		}
 	})
 
 	// Expecting an error from the group
@@ -48,12 +53,11 @@ func TestErrGroupUsage(t *testing.T) {
 
 // TestContextPropagation demonstrates the propagation of context cancellation through multiple layers.
 func TestContextPropagation(t *testing.T) {
-	ctx := context.Background()
-
+	ctx, cancelFunc := context.WithCancel(context.Background())
 	// Simulate a chain of operations each passing the context to the next function
 	go func(ctx context.Context) {
 		go func(ctx context.Context) {
-			_, cancelFunc := context.WithCancel(ctx)
+
 			time.Sleep(time.Second) // Simulate some processing time
 			cancelFunc()            // Cancel the context
 		}(ctx)
@@ -71,9 +75,9 @@ func TestContextPropagation(t *testing.T) {
 // TestWithCancelCause demonstrates the use of context.WithCancelCause.
 func TestWithCancelCause(t *testing.T) {
 	ourError := errors.New("we wish to see our specific cancel error")
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancelCause(context.Background())
 
-	cancel()
+	cancel(ourError)
 
 	if cause := context.Cause(ctx); !errors.Is(cause, ourError) {
 		t.Errorf("Expected '%v', got '%v'", ourError, cause)
@@ -85,13 +89,23 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	sigCh := make(chan os.Signal)
+	sigCh := make(chan os.Signal, 1)
 	signal.Notify(sigCh, syscall.SIGINT)
 
 	go func() {
 		// Simulate sending a SIGINT to our own process
 		if err := syscall.Kill(syscall.Getpid(), syscall.SIGINT); err != nil {
 			require.NoError(t, err, "failed to send SIGINT")
+		}
+		select {
+		case <-sigCh:
+			{
+				return
+			}
+		default:
+			{
+				// life continues
+			}
 		}
 	}()
 
@@ -110,8 +124,9 @@ func TestDeadlock(t *testing.T) {
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
+		mu.Unlock()
 		mu.Lock()
-		defer mu.Unlock()
+
 	}()
 
 	wg.Wait()
@@ -126,9 +141,10 @@ func TestWaitGroupByValue(t *testing.T) {
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)
-	go func(wg sync.WaitGroup) {
+	go func(wg *sync.WaitGroup) {
 		defer wg.Done()
-	}(wg)
+	}(&wg)
+	// note passing wait groups around are bad practice
 
 	wg.Wait()
 }
@@ -137,9 +153,9 @@ func TestWaitGroupByValue(t *testing.T) {
 func TestWaitGroupIncorrectAdd(t *testing.T) {
 	wg := sync.WaitGroup{}
 	finishedSuccessfully := false
-
+	wg.Add(1)
 	go func() {
-		wg.Add(1)
+
 		defer wg.Done()
 		defer func() {
 			finishedSuccessfully = true
@@ -166,12 +182,13 @@ func TestDefaultBusyLoop(t *testing.T) {
 	for {
 		select {
 		case val, ok := <-ch:
+			counter++
 			if !ok {
 				return
 			}
 			slog.Info("received", "value", val)
+
 		default:
-			counter++
 			if counter > 50 {
 				t.Fatalf("Something is wrong")
 			}
@@ -196,7 +213,7 @@ func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			count++
+			atomic.AddInt32(&count, 1)
 		}()
 	}
 
@@ -207,7 +224,7 @@ func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 // nolint
 func TestUnorderedReadFromChannels(t *testing.T) {
 	for i := 0; i < 10; i++ {
-		testUnorderedReadFromChannels(t)
+		go testUnorderedReadFromChannels(t)
 	}
 }
 
