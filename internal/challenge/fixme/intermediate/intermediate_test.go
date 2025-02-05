@@ -39,7 +39,7 @@ func TestErrGroupUsage(t *testing.T) {
 	g.Go(func() error {
 		for {
 			select {
-			case <-ctx.Done():
+			case <-ctx.Done(): // check for context cancellation
 				return nil
 			default: // do something else
 			}
@@ -54,7 +54,7 @@ func TestErrGroupUsage(t *testing.T) {
 
 // TestContextPropagation demonstrates the propagation of context cancellation through multiple layers.
 func TestContextPropagation(t *testing.T) {
-	ctx, cancelFunc := context.WithCancel(context.Background())
+	ctx, cancelFunc := context.WithCancel(context.Background()) // define ctx and cancelFunc outside the goroutines
 
 	// Simulate a chain of operations each passing the context to the next function
 	go func(ctx context.Context) {
@@ -76,7 +76,7 @@ func TestContextPropagation(t *testing.T) {
 // TestWithCancelCause demonstrates the use of context.WithCancelCause.
 func TestWithCancelCause(t *testing.T) {
 	ourError := errors.New("we wish to see our specific cancel error")
-	ctx, cancel := context.WithCancelCause(context.Background())
+	ctx, cancel := context.WithCancelCause(context.Background()) // use WithCancelCause so we can add ourError
 
 	cancel(ourError)
 
@@ -109,7 +109,7 @@ func TestDeadlock(t *testing.T) {
 	defer cancelFn()
 
 	var mu sync.Mutex
-
+	// remove extra lock
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {
@@ -130,7 +130,7 @@ func TestWaitGroupByValue(t *testing.T) {
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)
-	go func(wg *sync.WaitGroup) {
+	go func(wg *sync.WaitGroup) { // send waitGroup by reference, or maybe not at all
 		defer wg.Done()
 	}(&wg)
 
@@ -141,7 +141,7 @@ func TestWaitGroupByValue(t *testing.T) {
 func TestWaitGroupIncorrectAdd(t *testing.T) {
 	wg := sync.WaitGroup{}
 	finishedSuccessfully := false
-	wg.Add(1)
+	wg.Add(1) // add outside the goroutine
 	go func() {
 		defer wg.Done()
 		defer func() {
@@ -175,7 +175,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 			slog.Info("received", "value", val)
 
 		default: // maybe we can just remove the default?
-			time.Sleep(time.Second)
+			time.Sleep(time.Second) // add timeout to allow to read from channel
 			counter++
 			if counter > 50 {
 				t.Fatalf("Something is wrong")
