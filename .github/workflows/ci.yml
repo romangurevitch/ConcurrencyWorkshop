@@ -76,7 +76,7 @@ jobs:
           go-version: 'stable'
 
       - name: Install dependencies
-        id: changes
+        id: deps
         run: |
           sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev libxkbcommon-dev
 
