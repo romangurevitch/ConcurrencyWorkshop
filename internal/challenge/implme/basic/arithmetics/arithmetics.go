@@ -1,6 +1,7 @@
 package arithmetics
 
 import (
+	"context"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -17,14 +18,20 @@ func SequentialSum(inputSize int) int {
 // ParallelSum implement this method.
 func ParallelSum(inputSize int) int {
 	var sum atomic.Int64
+	ctx := context.Background()
 	wg := sync.WaitGroup{}
 	wg.Add(inputSize)
 	for i := 1; i <= inputSize; i++ {
 		i := i
-		go func() {
+		go func(ctx context.Context) {
 			defer wg.Done()
-			sum.Add(process(int64(i)))
-		}()
+			select {
+			case <-ctx.Done():
+				return
+			default:
+				sum.Add(process(int64(i)))
+			}
+		}(ctx)
 	}
 	wg.Wait()
 	return int(sum.Load())
