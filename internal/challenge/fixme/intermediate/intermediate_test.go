@@ -26,7 +26,7 @@ func TestErrGroupUsage(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	g, _ := errgroup.WithContext(context.Background())
+	g, ctx := errgroup.WithContext(context.Background())
 
 	taskError := errors.New("task failed with an error")
 
@@ -37,7 +37,12 @@ func TestErrGroupUsage(t *testing.T) {
 
 	// Task that runs forever
 	g.Go(func() error {
-		select {}
+		for {
+			select {
+			case <-ctx.Done(): // check for context cancellation
+				return ctx.Err()
+			}
+		}
 	})
 
 	// Expecting an error from the group
@@ -48,12 +53,11 @@ func TestErrGroupUsage(t *testing.T) {
 
 // TestContextPropagation demonstrates the propagation of context cancellation through multiple layers.
 func TestContextPropagation(t *testing.T) {
-	ctx := context.Background()
+	ctx, cancelFunc := context.WithCancel(context.Background()) // define ctx and cancelFunc outside the goroutines
 
 	// Simulate a chain of operations each passing the context to the next function
 	go func(ctx context.Context) {
 		go func(ctx context.Context) {
-			_, cancelFunc := context.WithCancel(ctx)
 			time.Sleep(time.Second) // Simulate some processing time
 			cancelFunc()            // Cancel the context
 		}(ctx)
@@ -71,9 +75,9 @@ func TestContextPropagation(t *testing.T) {
 // TestWithCancelCause demonstrates the use of context.WithCancelCause.
 func TestWithCancelCause(t *testing.T) {
 	ourError := errors.New("we wish to see our specific cancel error")
-	ctx, cancel := context.WithCancel(context.Background())
+	ctx, cancel := context.WithCancelCause(context.Background()) // use WithCancelCause so we can add ourError
 
-	cancel()
+	cancel(ourError)
 
 	if cause := context.Cause(ctx); !errors.Is(cause, ourError) {
 		t.Errorf("Expected '%v', got '%v'", ourError, cause)
@@ -85,7 +89,7 @@ func TestUnbufferedNotifyChannel(t *testing.T) {
 	cancelFn := test.ExitWithCancelAfter(context.Background(), time.Second)
 	defer cancelFn()
 
-	sigCh := make(chan os.Signal)
+	sigCh := make(chan os.Signal, 1) // make buffered because Notify runs a select
 	signal.Notify(sigCh, syscall.SIGINT)
 
 	go func() {
@@ -104,8 +108,7 @@ func TestDeadlock(t *testing.T) {
 	defer cancelFn()
 
 	var mu sync.Mutex
-	mu.Lock()
-
+	// remove extra lock
 	wg := sync.WaitGroup{}
 	wg.Add(1)
 	go func() {
@@ -126,9 +129,9 @@ func TestWaitGroupByValue(t *testing.T) {
 	wg := sync.WaitGroup{}
 
 	wg.Add(1)
-	go func(wg sync.WaitGroup) {
+	go func(wg *sync.WaitGroup) { // send waitGroup by reference, or maybe not at all
 		defer wg.Done()
-	}(wg)
+	}(&wg)
 
 	wg.Wait()
 }
@@ -137,9 +140,8 @@ func TestWaitGroupByValue(t *testing.T) {
 func TestWaitGroupIncorrectAdd(t *testing.T) {
 	wg := sync.WaitGroup{}
 	finishedSuccessfully := false
-
+	wg.Add(1) // add outside the goroutine
 	go func() {
-		wg.Add(1)
 		defer wg.Done()
 		defer func() {
 			finishedSuccessfully = true
@@ -162,7 +164,7 @@ func TestDefaultBusyLoop(t *testing.T) {
 		close(ch)
 	}()
 
-	counter := 0
+	// counter := 0
 	for {
 		select {
 		case val, ok := <-ch:
@@ -170,25 +172,28 @@ func TestDefaultBusyLoop(t *testing.T) {
 				return
 			}
 			slog.Info("received", "value", val)
-		default:
-			counter++
-			if counter > 50 {
-				t.Fatalf("Something is wrong")
-			}
+
+			// Default will always be executed, we can remove this to block until we receive the value
+			// Or maybe increase the counter/add sleep (not recommended!)
+			// default:
+			// 	counter++
+			// 	if counter > 50 {
+			// 		t.Fatalf("Something is wrong")
+			// 	}
 		}
 	}
 }
 
 // nolint
 func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
-	var count int32
+	var count atomic.Int32
 	wg := sync.WaitGroup{}
 
 	for i := 0; i < 1000; i++ {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			atomic.AddInt32(&count, 1)
+			count.Add(1)
 		}()
 	}
 
@@ -196,12 +201,12 @@ func TestMixingAtomicAndNonAtomicOperations(t *testing.T) {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			count++
+			count.Add(1)
 		}()
 	}
 
 	wg.Wait()
-	require.Equal(t, int32(2000), count, "Count was not updated atomically")
+	require.Equal(t, int32(2000), count.Load(), "Count was not updated atomically")
 }
 
 // nolint
@@ -220,14 +225,12 @@ func testUnorderedReadFromChannels(t *testing.T) {
 	ch2 <- 3
 
 	result := 5
-	for i := 0; i < 2; i++ {
-		select {
-		case val := <-ch1:
-			result *= val // result * 2
-		case val := <-ch2:
-			result += val // result + 3
-		}
-	}
+	// don't use select, because it is unordered
+	// also why do we need the for?
+	val := <-ch1
+	result *= val // result * 2
+	val = <-ch2
+	result += val // result + 3
 
 	expected := 13
 	require.Equal(t, expected, result)
