@@ -1,35 +1,49 @@
 package arithmetics
 
 import (
-	"sync"
-	"sync/atomic"
+	"context"
+	"log/slog"
 	"time"
+
+	"github.com/romangurevitch/concurrencyworkshop/internal/pattern/fanoutin"
 )
 
 func SequentialSum(inputSize int) int {
 	sum := 0
 	for i := 1; i <= inputSize; i++ {
-		sum += process(i)
+		val, err := process(context.Background(), i)
+		if err == nil {
+			sum += val
+		}
 	}
 	return sum
 }
 
-// ParallelSum implement this method.
 func ParallelSum(inputSize int) int {
-	sum := atomic.Int32{}
-	wg := sync.WaitGroup{}
+	sum := 0
+	ctx, cancel := context.WithCancel(context.Background())
+
+	var jobs []fanoutin.Job[int]
 	for i := 1; i <= inputSize; i++ {
-		wg.Add(1)
-		go func(num int) {
-			defer wg.Done()
-			sum.Add(int32(process(num)))
-		}(i)
+		jobs = append(jobs, fanoutin.Job[int]{ID: i, Value: i})
 	}
-	wg.Wait()
-	return int(sum.Load())
+
+	// Fan out
+	results := fanoutin.FanOut(ctx, jobs, process)
+
+	// Fan in
+	for result := range results {
+		if result.Err != nil {
+			slog.Error("Error processing job", "jobID", result.Job.ID, "error", result.Err)
+			cancel()
+			continue
+		}
+		sum += result.Value
+	}
+	return sum
 }
 
-func process(num int) int {
+func process(_ context.Context, num int) (int, error) {
 	time.Sleep(time.Millisecond) // simulate processing time
-	return num * num
+	return num * num, nil
 }
