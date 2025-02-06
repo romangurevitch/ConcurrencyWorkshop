@@ -75,6 +75,11 @@ jobs:
         with:
           go-version: 'stable'
 
+      - name: Install dependencies
+        id: deps
+        run: |
+          sudo apt-get install golang gcc libgl1-mesa-dev xorg-dev libxkbcommon-dev
+
       - name: Check for changes in implme-${{ matrix.level }} package
         id: changes
         run: |
