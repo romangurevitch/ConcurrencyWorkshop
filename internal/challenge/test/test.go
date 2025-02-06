@@ -3,7 +3,6 @@ package test
 import (
 	"context"
 	"log/slog"
-	"os"
 	"testing"
 	"time"
 )
@@ -12,13 +11,9 @@ func ExitWithCancelAfter(ctx context.Context, duration time.Duration) context.Ca
 	ctx, cancelFn := context.WithCancel(ctx)
 
 	go func() {
-		select {
-		case <-time.After(duration):
-			slog.Error("timeout exceeded, terminating program.")
-			os.Exit(1)
-		case <-ctx.Done():
-			return
-		}
+		<-time.After(duration)
+		slog.Error("timeout exceeded, terminating program.")
+		return
 	}()
 
 	return cancelFn
