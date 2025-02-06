@@ -51,7 +51,7 @@ func (p *pokeAPP) Start() {
 
 	p.input.SetPlaceHolder("e.g., pikachu or 25")
 	// TODO: impl and use OnChangedNonBlocking to improve responsiveness of the app
-	p.input.OnChanged = p.OnChanged
+	p.input.OnChanged = p.OnChangedNonBlocking
 
 	content := container.NewStack(container.NewVBox(p.header, p.input), p.img)
 	myWindow.SetContent(content)
@@ -73,8 +73,13 @@ func (p *pokeAPP) OnChanged(id string) {
 //
 // The function is currently not implemented and will panic if used.
 // TODO: Implement OnChangedNonBlocking to fetch and update Pokémon details asynchronously.
-func (p *pokeAPP) OnChangedNonBlocking(_ string) {
-	panic("implement me!")
+func (p *pokeAPP) OnChangedNonBlocking(id string) {
+	go func() {
+		_, err := p.fetchAndUpdatePokemon(id)
+		if err != nil {
+			slog.Error("fetchAndUpdatePokemon", "error", err)
+		}
+	}()
 }
 
 func (p *pokeAPP) fetchAndUpdatePokemon(id string) (bool, error) {
@@ -120,6 +125,10 @@ func imageFromURL(url string) *canvas.Image {
 		log.Fatal(err)
 	}
 	response, err := http.DefaultClient.Do(req)
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
 	defer func() {
 		err = response.Body.Close()
 		if err != nil {
